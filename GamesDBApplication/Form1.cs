@@ -37,7 +37,13 @@ namespace GamesDBApplication
                 return;
             }
 
-            DB_Manager.AddToDB_Controller(GameName, SystemName, Format);
+            try
+            {
+                DB_Manager.AddToDB_Controller(GameName, SystemName, Format);
+            } catch(SQLiteException SQL_e)
+            {
+                MessageBox.Show(Convert.ToString(SQL_e));
+            }
         }
     }
 }

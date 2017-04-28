@@ -14,6 +14,12 @@ namespace GamesDBApplication
         public DatabaseManager()
         {
             GamesDB = new SQLiteConnection("Data Source=C:\\Users\\Mosai\\db\\Games.sdb;Version=3");
+            GamesDB.Open();
+        }
+
+        ~DatabaseManager()
+        {
+            GamesDB.Close();
         }
 
         public void AddToDB_Controller(string GameName, string SystemName, string Format)
@@ -22,25 +28,24 @@ namespace GamesDBApplication
             int SystemID = Convert.ToInt32(null);
             int FormatID = Convert.ToInt32(null);
 
-            GamesDB.Open();
-
-            if (CheckExists("Games", "Game", GameName) == 0)
+            GameID = CheckExists("Games", "Game", GameName);
+            if (GameID == 0)
             {
                 GameID = AddGame(GameName);
             }
-            if (CheckExists("Systems", "System", SystemName) == 0)
+
+            SystemID = CheckExists("Systems", "System", SystemName);
+            if (SystemID == 0)
             {
                 SystemID = AddSystem(SystemName);
             }
+
             FormatID = DetermineFormatID(Format);
 
-            MessageBox.Show("Verified all values. Adding to main database");
             if(GameID != null && SystemID != null && FormatID != null)
             {
                 AddGameSystem(GameID, SystemID, FormatID);
             }
-          
-            GamesDB.Close();
         }
 
         int CheckExists(string Table, string SearchField, string SearchTerm)
@@ -56,7 +61,18 @@ namespace GamesDBApplication
             }
             if (Entities > 0)
             {
-                return 1;
+                // If the entity exists, fetch the row ID for it for later use.
+                string SQL_GET_ROWID = ("SELECT ID FROM " + Table + " WHERE " + SearchField + "==\"" + SearchTerm + "\"");
+                SQLiteCommand GetRowID = new SQLiteCommand(SQL_GET_ROWID, GamesDB);
+                SQLiteDataReader RowIDFetch = GetRowID.ExecuteReader();
+
+                int RowID = 0;
+                while (RowIDFetch.Read())
+                {
+                    RowID = RowIDFetch.GetInt32(0);
+                }
+
+                return RowID;
             }
             else
             {
@@ -77,7 +93,7 @@ namespace GamesDBApplication
             SQLiteDataReader GameTableReader = GameTableCommand.ExecuteReader();
             while (GameTableReader.Read())
             {
-                GameID = Convert.ToInt32(GameTableReader["ID"]);
+                GameID = GameTableReader.GetInt32(0);
                 break;
             }
 
@@ -97,7 +113,7 @@ namespace GamesDBApplication
             SQLiteDataReader SysTableReader = SysTableCommand.ExecuteReader();
             while (SysTableReader.Read())
             {
-                SystemID = Convert.ToInt32(SysTableReader["ID"]);
+                SystemID = SysTableReader.GetInt32(0);
                 break;
             }
 
