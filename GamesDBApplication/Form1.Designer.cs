@@ -50,13 +50,13 @@
             // 
             this.textBox1tb_GameName.Location = new System.Drawing.Point(87, 6);
             this.textBox1tb_GameName.Name = "textBox1tb_GameName";
-            this.textBox1tb_GameName.Size = new System.Drawing.Size(121, 20);
+            this.textBox1tb_GameName.Size = new System.Drawing.Size(277, 20);
             this.textBox1tb_GameName.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(37, 35);
+            this.label2.Location = new System.Drawing.Point(12, 35);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 2;
@@ -89,7 +89,7 @@
             "Xbox 360",
             "Xbox",
             "PC"});
-            this.cb_System.Location = new System.Drawing.Point(87, 32);
+            this.cb_System.Location = new System.Drawing.Point(62, 32);
             this.cb_System.Name = "cb_System";
             this.cb_System.Size = new System.Drawing.Size(121, 21);
             this.cb_System.TabIndex = 3;
@@ -97,7 +97,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(42, 63);
+            this.label3.Location = new System.Drawing.Point(198, 35);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 4;
@@ -110,16 +110,16 @@
             this.cb_Format.Items.AddRange(new object[] {
             "Physical",
             "Digital"});
-            this.cb_Format.Location = new System.Drawing.Point(87, 60);
+            this.cb_Format.Location = new System.Drawing.Point(243, 32);
             this.cb_Format.Name = "cb_Format";
             this.cb_Format.Size = new System.Drawing.Size(121, 21);
             this.cb_Format.TabIndex = 5;
             // 
             // button_Add
             // 
-            this.button_Add.Location = new System.Drawing.Point(15, 111);
+            this.button_Add.Location = new System.Drawing.Point(15, 73);
             this.button_Add.Name = "button_Add";
-            this.button_Add.Size = new System.Drawing.Size(193, 23);
+            this.button_Add.Size = new System.Drawing.Size(349, 23);
             this.button_Add.TabIndex = 6;
             this.button_Add.Text = "Add";
             this.button_Add.UseVisualStyleBackColor = true;
@@ -129,7 +129,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(392, 261);
+            this.ClientSize = new System.Drawing.Size(376, 108);
             this.Controls.Add(this.button_Add);
             this.Controls.Add(this.cb_Format);
             this.Controls.Add(this.label3);
@@ -138,7 +138,7 @@
             this.Controls.Add(this.textBox1tb_GameName);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "Games Database Access Tool";
+            this.Text = "GDB Access";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
