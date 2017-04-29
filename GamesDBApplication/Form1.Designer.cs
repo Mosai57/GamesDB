@@ -39,6 +39,8 @@
             this.lb_Results = new System.Windows.Forms.ListBox();
             this.button_Delete = new System.Windows.Forms.Button();
             this.button_Load = new System.Windows.Forms.Button();
+            this.button_Update = new System.Windows.Forms.Button();
+            this.button_Clear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -71,6 +73,7 @@
             this.cb_System.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_System.FormattingEnabled = true;
             this.cb_System.Items.AddRange(new object[] {
+            "",
             "PS4",
             "PS3",
             "PS2",
@@ -112,6 +115,7 @@
             this.cb_Format.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_Format.FormattingEnabled = true;
             this.cb_Format.Items.AddRange(new object[] {
+            "",
             "Physical",
             "Digital"});
             this.cb_Format.Location = new System.Drawing.Point(87, 65);
@@ -131,7 +135,7 @@
             // 
             // button_Search
             // 
-            this.button_Search.Location = new System.Drawing.Point(144, 115);
+            this.button_Search.Location = new System.Drawing.Point(183, 115);
             this.button_Search.Name = "button_Search";
             this.button_Search.Size = new System.Drawing.Size(64, 23);
             this.button_Search.TabIndex = 7;
@@ -149,7 +153,7 @@
             // 
             // button_Delete
             // 
-            this.button_Delete.Location = new System.Drawing.Point(43, 149);
+            this.button_Delete.Location = new System.Drawing.Point(183, 149);
             this.button_Delete.Name = "button_Delete";
             this.button_Delete.Size = new System.Drawing.Size(64, 23);
             this.button_Delete.TabIndex = 9;
@@ -158,7 +162,7 @@
             // 
             // button_Load
             // 
-            this.button_Load.Location = new System.Drawing.Point(144, 149);
+            this.button_Load.Location = new System.Drawing.Point(43, 149);
             this.button_Load.Name = "button_Load";
             this.button_Load.Size = new System.Drawing.Size(64, 23);
             this.button_Load.TabIndex = 10;
@@ -166,11 +170,32 @@
             this.button_Load.UseVisualStyleBackColor = true;
             this.button_Load.Click += new System.EventHandler(this.button_Load_Click);
             // 
+            // button_Update
+            // 
+            this.button_Update.Location = new System.Drawing.Point(113, 115);
+            this.button_Update.Name = "button_Update";
+            this.button_Update.Size = new System.Drawing.Size(64, 23);
+            this.button_Update.TabIndex = 11;
+            this.button_Update.Text = "Update";
+            this.button_Update.UseVisualStyleBackColor = true;
+            // 
+            // button_Clear
+            // 
+            this.button_Clear.Location = new System.Drawing.Point(113, 149);
+            this.button_Clear.Name = "button_Clear";
+            this.button_Clear.Size = new System.Drawing.Size(64, 23);
+            this.button_Clear.TabIndex = 12;
+            this.button_Clear.Text = "Clear";
+            this.button_Clear.UseVisualStyleBackColor = true;
+            this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(760, 184);
+            this.Controls.Add(this.button_Clear);
+            this.Controls.Add(this.button_Update);
             this.Controls.Add(this.button_Load);
             this.Controls.Add(this.button_Delete);
             this.Controls.Add(this.lb_Results);
@@ -203,6 +228,8 @@
         private System.Windows.Forms.ListBox lb_Results;
         private System.Windows.Forms.Button button_Delete;
         private System.Windows.Forms.Button button_Load;
+        private System.Windows.Forms.Button button_Update;
+        private System.Windows.Forms.Button button_Clear;
     }
 }
 

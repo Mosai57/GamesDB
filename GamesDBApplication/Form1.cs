@@ -66,7 +66,6 @@ namespace GamesDBApplication
             {
                 MessageBox.Show(Convert.ToString(SQL_e));
             }
-
         }
 
         private void button_Load_Click(object sender, EventArgs e)
@@ -78,6 +77,14 @@ namespace GamesDBApplication
             tb_GameName.Text = RowInfo[0].Trim();
             cb_System.Text = RowInfo[1].Trim();
             cb_Format.Text = RowInfo[2].Trim();
+        }
+
+        private void button_Clear_Click(object sender, EventArgs e)
+        {
+            tb_GameName.Clear();
+            cb_Format.Text = "";
+            cb_System.Text = "";
+            lb_Results.DataSource = null;
         }
     }
 }
