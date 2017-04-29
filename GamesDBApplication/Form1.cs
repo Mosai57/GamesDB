@@ -26,7 +26,7 @@ namespace GamesDBApplication
 
         private void button_Add_Click(object sender, EventArgs e)
         {
-            string GameName = textBox1tb_GameName.Text;
+            string GameName = tb_GameName.Text;
             string SystemName = cb_System.Text;
             string Format = cb_Format.Text;
 
@@ -44,6 +44,40 @@ namespace GamesDBApplication
             {
                 MessageBox.Show(Convert.ToString(SQL_e));
             }
+        }
+
+        private void button_Search_Click(object sender, EventArgs e)
+        {
+            string Game_SearchTerm = tb_GameName.Text;
+            if(Game_SearchTerm == "") { Game_SearchTerm = "%"; }
+
+            string System_SearchTerm = cb_System.Text;
+            if(System_SearchTerm == "") { System_SearchTerm = "%"; }
+
+            string Format_SearchTerm = cb_Format.Text;
+            if(Format_SearchTerm == "") { Format_SearchTerm = "%"; }
+
+            try
+            {
+                List<string> Results = DB_Manager.SearchDB(Game_SearchTerm, System_SearchTerm, Format_SearchTerm);
+                MessageBox.Show("Found " + Results.Count + " records");
+                lb_Results.DataSource = Results;
+            } catch(SQLiteException SQL_e)
+            {
+                MessageBox.Show(Convert.ToString(SQL_e));
+            }
+
+        }
+
+        private void button_Load_Click(object sender, EventArgs e)
+        {
+            string Highlighted_Data = Convert.ToString(lb_Results.SelectedItem);
+            var RowInfo = new[] { "", "", "" };
+            var split = Highlighted_Data.Split('/');
+            Array.Copy(split, RowInfo, split.Length <= 3 ? split.Length : 3);
+            tb_GameName.Text = RowInfo[0].Trim();
+            cb_System.Text = RowInfo[1].Trim();
+            cb_Format.Text = RowInfo[2].Trim();
         }
     }
 }

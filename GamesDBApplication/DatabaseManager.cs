@@ -127,6 +127,33 @@ namespace GamesDBApplication
             GameSysCommand.ExecuteNonQuery();
         }
 
+        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
+        {
+            List<string> Search_Results = new List<string>();
+            string SQL_Search_Command = 
+                @"SELECT Game, Platform, Format
+                  FROM(
+                    SELECT
+                        Games.Game AS Game,
+                        Systems.System AS Platform,
+                        Format.Type AS Format
+                    FROM
+                        GameSystem
+                    INNER JOIN Games ON GameSystem.GameID = Games.ID
+                    INNER JOIN Systems ON GameSystem.SystemID = Systems.ID
+                    INNER JOIN Format ON GameSystem.FormatID = Format.ID
+                  ) WHERE "
+                  + "Game LIKE \"" + Game_SearchTerm + "\" AND Platform LIKE \"" + System_SearchTerm + "\" AND Format LIKE \"" + Format_SearchTerm + "\" ORDER BY Game ASC";
+            SQLiteCommand GetRows = new SQLiteCommand(SQL_Search_Command, GamesDB);
+            SQLiteDataReader MatchReader = GetRows.ExecuteReader();
+            while (MatchReader.Read())
+            {
+                Search_Results.Add(MatchReader.GetString(0) + " / " + MatchReader.GetString(1) + " / " + MatchReader.GetString(2));
+            }
+
+            return Search_Results;
+        }
+
         // We know that theres only two possible values for Format, so we're going to play a bit dirty
         int DetermineFormatID(string Format)
         {
