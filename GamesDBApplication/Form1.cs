@@ -86,5 +86,42 @@ namespace GamesDBApplication
             cb_System.Text = "";
             lb_Results.DataSource = null;
         }
+
+        private void button_Delete_Click(object sender, EventArgs e)
+        {
+            if(lb_Results.SelectedItem != null)
+            {
+                string[] RowInfo = SplitRowInfo(Convert.ToString(lb_Results.SelectedItem));
+
+                DialogResult PerformDelete = MessageBox.Show("Are you sure you want to delete the following record: " + RowInfo[0] + " / " + RowInfo[1] + " / " + RowInfo[2], 
+                    "Confirm Delete", MessageBoxButtons.YesNo);
+                if(PerformDelete == DialogResult.Yes)
+                {
+                    string GameName = RowInfo[0].Trim();
+                    string SystemName = RowInfo[1].Trim();
+                    string FormatType = RowInfo[2].Trim();
+                    bool Deleted = false;
+
+                    Deleted = DB_Manager.DeleteRecord(GameName, SystemName, FormatType);
+                    if (Deleted)
+                    {
+                        MessageBox.Show("Record deleted");
+                    }else
+                    {
+                        MessageBox.Show("Unable to delete record. Error occured.");
+                    }
+                }
+
+            }
+        }
+
+        private string[] SplitRowInfo(string ToSplit)
+        {
+            var NewArray = new[] { "", "", "" };
+            var split = ToSplit.Split('/');
+            Array.Copy(split, NewArray, split.Length <= 3 ? split.Length : 3);
+
+            return NewArray;
+        }
     }
 }

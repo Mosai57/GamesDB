@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,9 @@ namespace GamesDBApplication
         private SQLiteConnection GamesDB;
         public DatabaseManager()
         {
-            GamesDB = new SQLiteConnection("Data Source=C:\\Users\\Mosai\\db\\Games.sdb;Version=3");
+            string UserName = Environment.UserName;
+            string FilePath = "C:\\Users\\" + UserName + "\\db\\Games.sdb";
+            GamesDB = new SQLiteConnection("Data Source=" + FilePath + ";Version=3");
             GamesDB.Open();
         }
 
@@ -22,56 +25,191 @@ namespace GamesDBApplication
             GamesDB.Close();
         }
 
+        //Done
         public void AddToDB_Controller(string GameName, string SystemName, string Format)
         {
             int GameID = Convert.ToInt32(null);
             int SystemID = Convert.ToInt32(null);
             int FormatID = Convert.ToInt32(null);
 
-            GameID = CheckExists("Games", "Game", GameName);
+            GameID = GetGameID(GameName);
             if (GameID == 0)
             {
                 GameID = AddGame(GameName);
             }
 
-            SystemID = CheckExists("Systems", "System", SystemName);
+            SystemID = GetSystemID(SystemName);
             if (SystemID == 0)
             {
                 SystemID = AddSystem(SystemName);
             }
 
-            FormatID = DetermineFormatID(Format);
+            FormatID = GetFormatID(Format);
 
-            if(GameID != null && SystemID != null && FormatID != null)
+            if(GameID != 0 && SystemID != 0 && FormatID != 0)
             {
                 AddGameSystem(GameID, SystemID, FormatID);
             }
         }
 
-        int CheckExists(string Table, string SearchField, string SearchTerm)
+        //Done
+        int AddGame(string GameName)
         {
-            string SQL_COMMAND_SEARCH = ("SELECT COUNT(*) FROM " + Table + " WHERE " + SearchField + "==\"" + SearchTerm + "\"");
-            SQLiteCommand CheckExistsCommand = new SQLiteCommand(SQL_COMMAND_SEARCH, GamesDB);
-            SQLiteDataReader ExistReader = CheckExistsCommand.ExecuteReader();
+            int GameID = 0;
+            SQLiteParameter Param_GameName = new SQLiteParameter("@GameName", GameName);
 
-            int Entities = 0;
-            while (ExistReader.Read())
+            SQLiteCommand SQL_Add_Game = GamesDB.CreateCommand();
+            SQL_Add_Game.CommandText = "INSERT INTO Games (Game) VALUES (@GameName);";
+            SQL_Add_Game.Parameters.Add(Param_GameName);
+            SQL_Add_Game.ExecuteNonQuery();
+
+            SQLiteCommand SQL_Get_GameID = GamesDB.CreateCommand();
+            SQL_Get_GameID.CommandText = "SELECT ID FROM Games WHERE Game=@GameName";
+            SQL_Get_GameID.Parameters.Add(Param_GameName);
+
+            SQLiteDataReader Reader = SQL_Get_GameID.ExecuteReader();
+            while (Reader.Read())
             {
-                Entities = ExistReader.GetInt32(0);
+                GameID = Reader.GetInt32(0);
+                break;
             }
-            if (Entities > 0)
+
+            return GameID;
+        }
+
+        //Done
+        int AddSystem(string SystemName)
+        {
+            int SystemID = 0;
+            SQLiteParameter Param_SystemName = new SQLiteParameter("@SystemName", SystemName);
+
+            SQLiteCommand SQL_Add_System = GamesDB.CreateCommand();
+            SQL_Add_System.CommandText = "INSERT INTO Systems (System) VALUES (@SystemName);";
+            SQL_Add_System.Parameters.Add(Param_SystemName);
+            SQL_Add_System.ExecuteNonQuery();
+
+            SQLiteCommand SQL_Get_SystemID = GamesDB.CreateCommand();
+            SQL_Get_SystemID.CommandText = "SELECT ID FROM Systems WHERE System=@SystemName";
+            SQL_Get_SystemID.Parameters.Add(Param_SystemName);
+     
+            SQLiteDataReader Reader = SQL_Get_SystemID.ExecuteReader();
+            while (Reader.Read())
             {
-                // If the entity exists, fetch the row ID for it for later use.
-                string SQL_GET_ROWID = ("SELECT ID FROM " + Table + " WHERE " + SearchField + "==\"" + SearchTerm + "\"");
-                SQLiteCommand GetRowID = new SQLiteCommand(SQL_GET_ROWID, GamesDB);
-                SQLiteDataReader RowIDFetch = GetRowID.ExecuteReader();
+                SystemID = Reader.GetInt32(0);
+                break;
+            }
 
-                int RowID = 0;
-                while (RowIDFetch.Read())
-                {
-                    RowID = RowIDFetch.GetInt32(0);
-                }
+            return SystemID;
+        }
 
+        //Done
+        void AddGameSystem(int GameID, int SystemID, int FormatID)
+        {
+            SQLiteCommand SQL_Add_Entry = GamesDB.CreateCommand();
+            SQL_Add_Entry.CommandText = "INSERT INTO GameSystem (GameID, SystemID, FormatID) Values (@GameID, @SystemID, @FormatID)";
+            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@GameID", GameID));
+            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@SystemID", SystemID));
+            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@FormatID", FormatID));
+
+            SQL_Add_Entry.ExecuteNonQuery();
+        }
+
+        //Done
+        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
+        {
+            List<string> Search_Results = new List<string>();
+
+            SQLiteCommand SQL_Get_Rows = GamesDB.CreateCommand();
+            SQL_Get_Rows.CommandText = 
+                @"SELECT Game, Platform, Format 
+                  FROM( 
+                    SELECT 
+                        Games.Game AS Game, 
+                        Systems.System AS Platform, 
+                        Format.Type AS Format 
+                    FROM 
+                        GameSystem 
+                    INNER JOIN Games ON GameSystem.GameID = Games.ID 
+                    INNER JOIN Systems ON GameSystem.SystemID = Systems.ID 
+                    INNER JOIN Format ON GameSystem.FormatID = Format.ID 
+                  ) WHERE Game LIKE @GameTerm AND Platform LIKE @SystemTerm AND Format LIKE @FormatTerm 
+                  ORDER BY Game ASC";
+            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@GameTerm", Game_SearchTerm));
+            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@SystemTerm", System_SearchTerm));
+            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@FormatTerm", Format_SearchTerm));
+
+            SQLiteDataReader Reader = SQL_Get_Rows.ExecuteReader();
+            while (Reader.Read())
+            {
+                Search_Results.Add(Reader.GetString(0) + " / " + Reader.GetString(1) + " / " + Reader.GetString(2));
+            }
+
+            return Search_Results;
+        }
+
+        public bool DeleteRecord(string GameName, string SystemName, string FormatType)
+        {
+            int GameName_ID = GetGameID(GameName);
+            int SystemName_ID = GetSystemID(SystemName);
+            int FormatType_ID = GetFormatID(FormatType);
+
+            SQLiteCommand SQL_Delete_Record = GamesDB.CreateCommand();
+            SQL_Delete_Record.CommandText = "DELETE FROM GameSystem WHERE GameID=@GameName_ID AND SystemID=@SystemName_ID AND FormatID=@FormatType_ID";
+
+            SQL_Delete_Record.Parameters.Add(new SQLiteParameter("@GameName_ID", GameName_ID));
+            SQL_Delete_Record.Parameters.Add(new SQLiteParameter("@SystemName_ID", SystemName_ID));
+            SQL_Delete_Record.Parameters.Add(new SQLiteParameter("@FormatType_ID", FormatType_ID));
+
+            SQL_Delete_Record.ExecuteNonQuery();
+            return true;
+        }
+
+        //Done
+        int GetGameID(string GameName)
+        {
+            SQLiteParameter Param_GameName = new SQLiteParameter("@GameName", GameName);
+
+            SQLiteCommand SQL_Get_RowID = GamesDB.CreateCommand();
+            SQL_Get_RowID.CommandText = "SELECT ID FROM Games WHERE Game=@GameName";
+            SQL_Get_RowID.Parameters.Add(Param_GameName);
+            SQLiteDataReader RowIDFetch = SQL_Get_RowID.ExecuteReader();
+
+            int RowID = Convert.ToInt32(null);
+
+            while (RowIDFetch.Read())
+            {
+                RowID = RowIDFetch.GetInt32(0);
+                break;
+            }
+
+            if (RowID != Convert.ToInt32(null))
+            {
+                return RowID;
+            }else
+            {
+                return 0;
+            }  
+        }
+
+        int GetSystemID(string SystemName)
+        {
+            SQLiteParameter Param_SystemName = new SQLiteParameter("@SystemName", SystemName);
+
+            SQLiteCommand SQL_Get_RowID = GamesDB.CreateCommand();
+            SQL_Get_RowID.CommandText = "SELECT ID FROM Systems WHERE System==@SystemName";
+            SQL_Get_RowID.Parameters.Add(Param_SystemName);
+            SQLiteDataReader RowIDFetch = SQL_Get_RowID.ExecuteReader();
+
+            int RowID = Convert.ToInt32(null);
+
+            while (RowIDFetch.Read())
+            {
+                RowID = RowIDFetch.GetInt32(0);
+                break;
+            }
+
+            if (RowID != Convert.ToInt32(null))
+            {
                 return RowID;
             }
             else
@@ -80,92 +218,22 @@ namespace GamesDBApplication
             }
         }
 
-        int AddGame(string GameName)
+        int GetFormatID(string Format)
         {
-            int GameID = 0;
+            int FormatID = 0;
+            SQLiteCommand SQL_Get_FormatID = GamesDB.CreateCommand();
 
-            string SQL_Command_GameTable = "INSERT INTO Games (Game) VALUES (\"" + GameName + "\");";
-            SQLiteCommand GameTableCommand = new SQLiteCommand(SQL_Command_GameTable, GamesDB);
-            GameTableCommand.ExecuteNonQuery();
+            SQL_Get_FormatID.CommandText = "SELECT ID FROM Format WHERE Type=@Format";
+            SQL_Get_FormatID.Parameters.Add(new SQLiteParameter("@Format", Format));
 
-            string SQL_Command_GetGameID = "SELECT ID FROM Games WHERE Game==\"" + GameName + "\"";
-            GameTableCommand = new SQLiteCommand(SQL_Command_GetGameID, GamesDB);
-            SQLiteDataReader GameTableReader = GameTableCommand.ExecuteReader();
-            while (GameTableReader.Read())
+            SQLiteDataReader Reader = SQL_Get_FormatID.ExecuteReader();
+            while (Reader.Read())
             {
-                GameID = GameTableReader.GetInt32(0);
+                FormatID = Reader.GetInt32(0);
                 break;
             }
 
-            return GameID;
-        }
-
-        int AddSystem(string SystemName)
-        {
-            int SystemID = 0;
-
-            string SQL_Command_SystemTable = "INSERT INTO Systems (System) VALUES (\"" + SystemName + "\");";
-            SQLiteCommand SysTableCommand = new SQLiteCommand(SQL_Command_SystemTable, GamesDB);
-            SysTableCommand.ExecuteNonQuery();
-
-            string SQL_Command_GetSystemID = "SELECT ID FROM Systems WHERE System==\"" + SystemName + "\"";
-            SysTableCommand = new SQLiteCommand(SQL_Command_GetSystemID, GamesDB);
-            SQLiteDataReader SysTableReader = SysTableCommand.ExecuteReader();
-            while (SysTableReader.Read())
-            {
-                SystemID = SysTableReader.GetInt32(0);
-                break;
-            }
-
-            return SystemID;
-        }
-
-        void AddGameSystem(int GameID, int SystemID, int FormatID)
-        {
-            string SQL_Command_GameSystemTable = "INSERT INTO GameSystem (GameID, SystemID, FormatID) Values (" + GameID + ", " + SystemID + ", " + FormatID + ")";
-            SQLiteCommand GameSysCommand = new SQLiteCommand(SQL_Command_GameSystemTable, GamesDB);
-            GameSysCommand.ExecuteNonQuery();
-        }
-
-        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
-        {
-            List<string> Search_Results = new List<string>();
-            string SQL_Search_Command = 
-                @"SELECT Game, Platform, Format
-                  FROM(
-                    SELECT
-                        Games.Game AS Game,
-                        Systems.System AS Platform,
-                        Format.Type AS Format
-                    FROM
-                        GameSystem
-                    INNER JOIN Games ON GameSystem.GameID = Games.ID
-                    INNER JOIN Systems ON GameSystem.SystemID = Systems.ID
-                    INNER JOIN Format ON GameSystem.FormatID = Format.ID
-                  ) WHERE "
-                  + "Game LIKE \"" + Game_SearchTerm + "\" AND Platform LIKE \"" + System_SearchTerm + "\" AND Format LIKE \"" + Format_SearchTerm + "\" ORDER BY Game ASC";
-            SQLiteCommand GetRows = new SQLiteCommand(SQL_Search_Command, GamesDB);
-            SQLiteDataReader MatchReader = GetRows.ExecuteReader();
-            while (MatchReader.Read())
-            {
-                Search_Results.Add(MatchReader.GetString(0) + " / " + MatchReader.GetString(1) + " / " + MatchReader.GetString(2));
-            }
-
-            return Search_Results;
-        }
-
-        // We know that theres only two possible values for Format, so we're going to play a bit dirty
-        int DetermineFormatID(string Format)
-        {
-            switch (Format)
-            {
-                case "Physical":
-                    return 1;
-                case "Digital":
-                    return 2;
-                default:
-                    return 0;
-            }
+            return FormatID;
         }
     }
 }
