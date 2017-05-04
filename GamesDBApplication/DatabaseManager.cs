@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace GamesDBApplication
 {
-    class DatabaseManager
+    class DatabaseManager : IDisposable
     {
         private SQLiteConnection GamesDB;
         public DatabaseManager()
@@ -20,9 +20,13 @@ namespace GamesDBApplication
             GamesDB.Open();
         }
 
-        ~DatabaseManager()
+        public void Dispose()
         {
-            GamesDB.Close();
+            if (GamesDB != null)
+            {
+                GamesDB.Dispose();
+                GamesDB = null;
+            }
         }
 
         //Done
