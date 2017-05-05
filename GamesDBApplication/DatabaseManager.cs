@@ -63,20 +63,9 @@ namespace GamesDBApplication
             SQLiteParameter Param_GameName = new SQLiteParameter("@GameName", GameName);
 
             SQLiteCommand SQL_Add_Game = GamesDB.CreateCommand();
-            SQL_Add_Game.CommandText = "INSERT INTO Games (Game) VALUES (@GameName);";
+            SQL_Add_Game.CommandText = "INSERT INTO Games (Game) VALUES (@GameName); select last_insert_rowid();";
             SQL_Add_Game.Parameters.Add(Param_GameName);
-            SQL_Add_Game.ExecuteNonQuery();
-
-            SQLiteCommand SQL_Get_GameID = GamesDB.CreateCommand();
-            SQL_Get_GameID.CommandText = "SELECT ID FROM Games WHERE Game=@GameName";
-            SQL_Get_GameID.Parameters.Add(Param_GameName);
-
-            SQLiteDataReader Reader = SQL_Get_GameID.ExecuteReader();
-            while (Reader.Read())
-            {
-                GameID = Reader.GetInt32(0);
-                break;
-            }
+            GameID = (int)(long)SQL_Add_Game.ExecuteScalar();
 
             return GameID;
         }
@@ -88,20 +77,9 @@ namespace GamesDBApplication
             SQLiteParameter Param_SystemName = new SQLiteParameter("@SystemName", SystemName);
 
             SQLiteCommand SQL_Add_System = GamesDB.CreateCommand();
-            SQL_Add_System.CommandText = "INSERT INTO Systems (System) VALUES (@SystemName);";
+            SQL_Add_System.CommandText = "INSERT INTO Systems (System) VALUES (@SystemName); select last_insert_rowid();";
             SQL_Add_System.Parameters.Add(Param_SystemName);
-            SQL_Add_System.ExecuteNonQuery();
-
-            SQLiteCommand SQL_Get_SystemID = GamesDB.CreateCommand();
-            SQL_Get_SystemID.CommandText = "SELECT ID FROM Systems WHERE System=@SystemName";
-            SQL_Get_SystemID.Parameters.Add(Param_SystemName);
-     
-            SQLiteDataReader Reader = SQL_Get_SystemID.ExecuteReader();
-            while (Reader.Read())
-            {
-                SystemID = Reader.GetInt32(0);
-                break;
-            }
+            SystemID = (int)(long)SQL_Add_System.ExecuteScalar();
 
             return SystemID;
         }
