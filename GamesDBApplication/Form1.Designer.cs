@@ -40,6 +40,7 @@
             this.button_Delete = new System.Windows.Forms.Button();
             this.button_Load = new System.Windows.Forms.Button();
             this.button_Clear = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -73,28 +74,28 @@
             this.cb_System.FormattingEnabled = true;
             this.cb_System.Items.AddRange(new object[] {
             "",
-            "PS4",
-            "PS3",
-            "PS2",
-            "PS1",
-            "PSVita",
-            "PSP",
-            "Switch",
-            "Wii U",
-            "Wii",
-            "Gamecube",
-            "N64",
-            "SNES",
-            "NES",
             "3DS",
-            "NDS",
+            "GB",
             "GBA",
             "GBC",
-            "GB",
-            "Xbox One",
-            "Xbox 360",
+            "Gamecube",
+            "N64",
+            "NDS",
+            "NES",
+            "PC",
+            "PS1",
+            "PS2",
+            "PS3",
+            "PS4",
+            "PSP",
+            "PSVita",
+            "SNES",
+            "Switch",
+            "Wii",
+            "Wii U",
             "Xbox",
-            "PC"});
+            "Xbox 360",
+            "Xbox One"});
             this.cb_System.Location = new System.Drawing.Point(87, 38);
             this.cb_System.Name = "cb_System";
             this.cb_System.Size = new System.Drawing.Size(121, 21);
@@ -124,6 +125,8 @@
             // 
             // button_Add
             // 
+            this.button_Add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_Add.AutoSize = true;
             this.button_Add.Location = new System.Drawing.Point(43, 115);
             this.button_Add.Name = "button_Add";
             this.button_Add.Size = new System.Drawing.Size(64, 23);
@@ -134,6 +137,8 @@
             // 
             // button_Search
             // 
+            this.button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_Search.AutoSize = true;
             this.button_Search.Location = new System.Drawing.Point(113, 115);
             this.button_Search.Name = "button_Search";
             this.button_Search.Size = new System.Drawing.Size(64, 23);
@@ -144,6 +149,7 @@
             // 
             // lb_Results
             // 
+            this.lb_Results.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lb_Results.FormattingEnabled = true;
             this.lb_Results.Location = new System.Drawing.Point(289, 12);
             this.lb_Results.Name = "lb_Results";
@@ -152,9 +158,11 @@
             // 
             // button_Delete
             // 
-            this.button_Delete.Location = new System.Drawing.Point(154, 149);
+            this.button_Delete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_Delete.AutoSize = true;
+            this.button_Delete.Location = new System.Drawing.Point(43, 149);
             this.button_Delete.Name = "button_Delete";
-            this.button_Delete.Size = new System.Drawing.Size(93, 23);
+            this.button_Delete.Size = new System.Drawing.Size(64, 23);
             this.button_Delete.TabIndex = 9;
             this.button_Delete.Text = "Delete";
             this.button_Delete.UseVisualStyleBackColor = true;
@@ -162,6 +170,8 @@
             // 
             // button_Load
             // 
+            this.button_Load.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_Load.AutoSize = true;
             this.button_Load.Location = new System.Drawing.Point(183, 115);
             this.button_Load.Name = "button_Load";
             this.button_Load.Size = new System.Drawing.Size(64, 23);
@@ -172,19 +182,32 @@
             // 
             // button_Clear
             // 
-            this.button_Clear.Location = new System.Drawing.Point(43, 149);
+            this.button_Clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_Clear.AutoSize = true;
+            this.button_Clear.Location = new System.Drawing.Point(113, 149);
             this.button_Clear.Name = "button_Clear";
-            this.button_Clear.Size = new System.Drawing.Size(93, 23);
+            this.button_Clear.Size = new System.Drawing.Size(64, 23);
             this.button_Clear.TabIndex = 12;
             this.button_Clear.Text = "Clear";
             this.button_Clear.UseVisualStyleBackColor = true;
             this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(183, 149);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(64, 23);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "Export";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(760, 184);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.button_Clear);
             this.Controls.Add(this.button_Load);
             this.Controls.Add(this.button_Delete);
@@ -219,6 +242,7 @@
         private System.Windows.Forms.Button button_Delete;
         private System.Windows.Forms.Button button_Load;
         private System.Windows.Forms.Button button_Clear;
+        private System.Windows.Forms.Button button1;
     }
 }
 

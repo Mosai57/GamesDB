@@ -14,6 +14,7 @@ namespace GamesDBApplication
     public partial class Form1 : Form
     {
         DatabaseManager DB_Manager;
+        List<string> listBoxContents;
         public Form1()
         {
             InitializeComponent();
@@ -40,6 +41,14 @@ namespace GamesDBApplication
             try
             {
                 DB_Manager.AddToDB_Controller(GameName, SystemName, Format);
+
+                MessageBox.Show("Added Record:\n" + GameName + " / " + SystemName + " / " + Format);
+                tb_GameName.Clear();
+                tb_GameName.Focus();
+
+                List<string> Results = DB_Manager.SearchDB("%", cb_System.Text, cb_Format.Text);
+                listBoxContents = Results;
+                lb_Results.DataSource = Results;
             } catch(SQLiteException SQL_e)
             {
                 MessageBox.Show(Convert.ToString(SQL_e));
@@ -61,6 +70,7 @@ namespace GamesDBApplication
             {
                 List<string> Results = DB_Manager.SearchDB(Game_SearchTerm, System_SearchTerm, Format_SearchTerm);
                 MessageBox.Show("Found " + Results.Count + " records");
+                listBoxContents = Results;
                 lb_Results.DataSource = Results;
             } catch(SQLiteException SQL_e)
             {
@@ -93,8 +103,10 @@ namespace GamesDBApplication
             {
                 string[] RowInfo = SplitRowInfo(Convert.ToString(lb_Results.SelectedItem));
 
-                DialogResult PerformDelete = MessageBox.Show("Are you sure you want to delete the following record: " + RowInfo[0] + " / " + RowInfo[1] + " / " + RowInfo[2], 
+                DialogResult PerformDelete = MessageBox.Show("Are you sure you want to delete the following record: " 
+                    + RowInfo[0] + " / " + RowInfo[1] + " / " + RowInfo[2], 
                     "Confirm Delete", MessageBoxButtons.YesNo);
+
                 if(PerformDelete == DialogResult.Yes)
                 {
                     string GameName = RowInfo[0].Trim();
@@ -106,7 +118,17 @@ namespace GamesDBApplication
                     if (Deleted)
                     {
                         MessageBox.Show("Record deleted");
-                    }else
+
+                        string systemText = cb_System.Text;
+                        if(systemText == "") { systemText = "%"; }
+                        string formatText = cb_Format.Text;
+                        if(formatText == "") { formatText = "%"; }
+
+                        List<string> Results = DB_Manager.SearchDB("%", systemText, formatText);
+                        listBoxContents = Results;
+                        lb_Results.DataSource = Results;
+                    }
+                    else
                     {
                         MessageBox.Show("Unable to delete record. Error occured.");
                     }
@@ -122,6 +144,22 @@ namespace GamesDBApplication
             Array.Copy(split, NewArray, split.Length <= 3 ? split.Length : 3);
 
             return NewArray;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.FileName = "gdbexport.csv";
+            saveFile.InitialDirectory = Convert.ToString(Environment.SpecialFolder.MyDocuments);
+            saveFile.Filter = "Comma Separated Values (*.csv)|*.csv";
+            saveFile.FilterIndex = 1;
+
+            if(saveFile.ShowDialog() == DialogResult.OK)
+            {
+                Export exportModule = new GamesDBApplication.Export();
+                exportModule.ExportCSV(listBoxContents, saveFile.FileName);
+                MessageBox.Show("Export completed!");
+            }
         }
     }
 }
