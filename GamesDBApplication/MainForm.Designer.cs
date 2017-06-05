@@ -56,7 +56,7 @@
             // 
             this.tb_GameName.Location = new System.Drawing.Point(87, 12);
             this.tb_GameName.Name = "tb_GameName";
-            this.tb_GameName.Size = new System.Drawing.Size(196, 20);
+            this.tb_GameName.Size = new System.Drawing.Size(192, 20);
             this.tb_GameName.TabIndex = 1;
             // 
             // label2
@@ -126,9 +126,9 @@
             // button_Add
             // 
             this.button_Add.AutoSize = true;
-            this.button_Add.Location = new System.Drawing.Point(43, 115);
+            this.button_Add.Location = new System.Drawing.Point(15, 115);
             this.button_Add.Name = "button_Add";
-            this.button_Add.Size = new System.Drawing.Size(64, 23);
+            this.button_Add.Size = new System.Drawing.Size(84, 23);
             this.button_Add.TabIndex = 6;
             this.button_Add.Text = "Add";
             this.button_Add.UseVisualStyleBackColor = true;
@@ -137,9 +137,9 @@
             // button_Search
             // 
             this.button_Search.AutoSize = true;
-            this.button_Search.Location = new System.Drawing.Point(113, 115);
+            this.button_Search.Location = new System.Drawing.Point(105, 115);
             this.button_Search.Name = "button_Search";
-            this.button_Search.Size = new System.Drawing.Size(64, 23);
+            this.button_Search.Size = new System.Drawing.Size(84, 23);
             this.button_Search.TabIndex = 7;
             this.button_Search.Text = "Search";
             this.button_Search.UseVisualStyleBackColor = true;
@@ -159,9 +159,9 @@
             // button_Delete
             // 
             this.button_Delete.AutoSize = true;
-            this.button_Delete.Location = new System.Drawing.Point(43, 149);
+            this.button_Delete.Location = new System.Drawing.Point(15, 149);
             this.button_Delete.Name = "button_Delete";
-            this.button_Delete.Size = new System.Drawing.Size(64, 23);
+            this.button_Delete.Size = new System.Drawing.Size(84, 23);
             this.button_Delete.TabIndex = 9;
             this.button_Delete.Text = "Delete";
             this.button_Delete.UseVisualStyleBackColor = true;
@@ -170,9 +170,9 @@
             // button_Load
             // 
             this.button_Load.AutoSize = true;
-            this.button_Load.Location = new System.Drawing.Point(183, 115);
+            this.button_Load.Location = new System.Drawing.Point(195, 115);
             this.button_Load.Name = "button_Load";
-            this.button_Load.Size = new System.Drawing.Size(64, 23);
+            this.button_Load.Size = new System.Drawing.Size(84, 23);
             this.button_Load.TabIndex = 10;
             this.button_Load.Text = "Load";
             this.button_Load.UseVisualStyleBackColor = true;
@@ -181,9 +181,9 @@
             // button_Clear
             // 
             this.button_Clear.AutoSize = true;
-            this.button_Clear.Location = new System.Drawing.Point(113, 149);
+            this.button_Clear.Location = new System.Drawing.Point(105, 149);
             this.button_Clear.Name = "button_Clear";
-            this.button_Clear.Size = new System.Drawing.Size(64, 23);
+            this.button_Clear.Size = new System.Drawing.Size(84, 23);
             this.button_Clear.TabIndex = 12;
             this.button_Clear.Text = "Clear";
             this.button_Clear.UseVisualStyleBackColor = true;
@@ -191,9 +191,9 @@
             // 
             // button_Export
             // 
-            this.button_Export.Location = new System.Drawing.Point(183, 149);
+            this.button_Export.Location = new System.Drawing.Point(195, 149);
             this.button_Export.Name = "button_Export";
-            this.button_Export.Size = new System.Drawing.Size(64, 23);
+            this.button_Export.Size = new System.Drawing.Size(84, 23);
             this.button_Export.TabIndex = 13;
             this.button_Export.Text = "Export";
             this.button_Export.UseVisualStyleBackColor = true;
