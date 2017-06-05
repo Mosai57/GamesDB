@@ -31,7 +31,6 @@ namespace GamesDBApplication
             string SystemName = cb_System.Text;
             string Format = cb_Format.Text;
 
-            // Check to make sure no idiots left a necessary spot blank
             if (GameName == "" || SystemName == "" || Format == "")
             {
                 MessageBox.Show("No fields may be left blank when adding an entry.", "Missing Fields", MessageBoxButtons.OK);
