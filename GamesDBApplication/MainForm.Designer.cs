@@ -1,6 +1,6 @@
 ﻿namespace GamesDBApplication
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -40,7 +40,7 @@
             this.button_Delete = new System.Windows.Forms.Button();
             this.button_Load = new System.Windows.Forms.Button();
             this.button_Clear = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_Export = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -192,22 +192,22 @@
             this.button_Clear.UseVisualStyleBackColor = true;
             this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
             // 
-            // button1
+            // button_Export
             // 
-            this.button1.Location = new System.Drawing.Point(183, 149);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(64, 23);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "Export";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button_Export.Location = new System.Drawing.Point(183, 149);
+            this.button_Export.Name = "button_Export";
+            this.button_Export.Size = new System.Drawing.Size(64, 23);
+            this.button_Export.TabIndex = 13;
+            this.button_Export.Text = "Export";
+            this.button_Export.UseVisualStyleBackColor = true;
+            this.button_Export.Click += new System.EventHandler(this.button_Export_Click);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(760, 184);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button_Export);
             this.Controls.Add(this.button_Clear);
             this.Controls.Add(this.button_Load);
             this.Controls.Add(this.button_Delete);
@@ -222,9 +222,9 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "GDB Access";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -244,7 +244,7 @@
         private System.Windows.Forms.Button button_Delete;
         private System.Windows.Forms.Button button_Load;
         private System.Windows.Forms.Button button_Clear;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_Export;
     }
 }
 
