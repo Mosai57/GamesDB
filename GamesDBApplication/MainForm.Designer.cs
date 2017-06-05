@@ -125,7 +125,6 @@
             // 
             // button_Add
             // 
-            this.button_Add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Add.AutoSize = true;
             this.button_Add.Location = new System.Drawing.Point(43, 115);
             this.button_Add.Name = "button_Add";
@@ -137,7 +136,6 @@
             // 
             // button_Search
             // 
-            this.button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Search.AutoSize = true;
             this.button_Search.Location = new System.Drawing.Point(113, 115);
             this.button_Search.Name = "button_Search";
@@ -149,7 +147,9 @@
             // 
             // lb_Results
             // 
-            this.lb_Results.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lb_Results.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_Results.FormattingEnabled = true;
             this.lb_Results.Location = new System.Drawing.Point(289, 12);
             this.lb_Results.Name = "lb_Results";
@@ -158,7 +158,6 @@
             // 
             // button_Delete
             // 
-            this.button_Delete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Delete.AutoSize = true;
             this.button_Delete.Location = new System.Drawing.Point(43, 149);
             this.button_Delete.Name = "button_Delete";
@@ -170,7 +169,6 @@
             // 
             // button_Load
             // 
-            this.button_Load.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Load.AutoSize = true;
             this.button_Load.Location = new System.Drawing.Point(183, 115);
             this.button_Load.Name = "button_Load";
@@ -182,7 +180,6 @@
             // 
             // button_Clear
             // 
-            this.button_Clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Clear.AutoSize = true;
             this.button_Clear.Location = new System.Drawing.Point(113, 149);
             this.button_Clear.Name = "button_Clear";
@@ -220,8 +217,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tb_GameName);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(776, 223);
             this.Name = "MainForm";
             this.Text = "GDB Access";
             this.Load += new System.EventHandler(this.MainForm_Load);
