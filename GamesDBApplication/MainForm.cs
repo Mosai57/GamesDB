@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
@@ -77,36 +71,26 @@ namespace GamesDBApplication
             }
         }
 
-        private void button_Load_Click(object sender, EventArgs e)
+        private void btn_Load_Click(object sender, EventArgs e)
         {
             string Highlighted_Data = Convert.ToString(lb_Results.SelectedItem);
-            var RowInfo = new[] { "", "", "" };
-            var split = Highlighted_Data.Split('/');
-            Array.Copy(split, RowInfo, split.Length <= 3 ? split.Length : 3);
+            string[] RowInfo = SplitRowInfo(Highlighted_Data);
             tb_GameName.Text = RowInfo[0].Trim();
             cb_System.Text = RowInfo[1].Trim();
             cb_Format.Text = RowInfo[2].Trim();
         }
 
-        private void button_Clear_Click(object sender, EventArgs e)
-        {
-            tb_GameName.Clear();
-            cb_Format.Text = "";
-            cb_System.Text = "";
-            lb_Results.DataSource = null;
-        }
-
         private void button_Delete_Click(object sender, EventArgs e)
         {
-            if(lb_Results.SelectedItem != null)
+            if (lb_Results.SelectedItem != null)
             {
                 string[] RowInfo = SplitRowInfo(Convert.ToString(lb_Results.SelectedItem));
 
-                DialogResult PerformDelete = MessageBox.Show("Are you sure you want to delete the following record: " 
-                    + RowInfo[0] + " / " + RowInfo[1] + " / " + RowInfo[2], 
+                DialogResult PerformDelete = MessageBox.Show("Are you sure you want to delete the following record: "
+                    + RowInfo[0] + " / " + RowInfo[1] + " / " + RowInfo[2],
                     "Confirm Delete", MessageBoxButtons.YesNo);
 
-                if(PerformDelete == DialogResult.Yes)
+                if (PerformDelete == DialogResult.Yes)
                 {
                     string GameName = RowInfo[0].Trim();
                     string SystemName = RowInfo[1].Trim();
@@ -119,9 +103,9 @@ namespace GamesDBApplication
                         MessageBox.Show("Record deleted");
 
                         string systemText = cb_System.Text;
-                        if(systemText == "") { systemText = "%"; }
+                        if (systemText == "") { systemText = "%"; }
                         string formatText = cb_Format.Text;
-                        if(formatText == "") { formatText = "%"; }
+                        if (formatText == "") { formatText = "%"; }
 
                         List<string> Results = DB_Manager.SearchDB("%", systemText, formatText);
                         listBoxContents = Results;
@@ -136,13 +120,12 @@ namespace GamesDBApplication
             }
         }
 
-        private string[] SplitRowInfo(string ToSplit)
+        private void button_Clear_Click(object sender, EventArgs e)
         {
-            var NewArray = new[] { "", "", "" };
-            var split = ToSplit.Split('/');
-            Array.Copy(split, NewArray, split.Length <= 3 ? split.Length : 3);
-
-            return NewArray;
+            tb_GameName.Clear();
+            cb_Format.Text = "";
+            cb_System.Text = "";
+            lb_Results.DataSource = null;
         }
 
         private void button_Export_Click(object sender, EventArgs e)
@@ -153,7 +136,7 @@ namespace GamesDBApplication
             saveFile.Filter = "Comma Separated Values (*.csv)|*.csv";
             saveFile.FilterIndex = 1;
 
-            if(saveFile.ShowDialog() == DialogResult.OK)
+            if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 Export exportModule = new GamesDBApplication.Export();
                 exportModule.ExportCSV(listBoxContents, saveFile.FileName);
@@ -161,15 +144,13 @@ namespace GamesDBApplication
             }
         }
 
-        private void lb_Results_SelectedIndexChanged(object sender, EventArgs e)
+        private string[] SplitRowInfo(string ToSplit)
         {
-            string Highlighted_Data = Convert.ToString(lb_Results.SelectedItem);
-            var RowInfo = new[] { "", "", "" };
-            var split = Highlighted_Data.Split('/');
-            Array.Copy(split, RowInfo, split.Length <= 3 ? split.Length : 3);
-            tb_GameName.Text = RowInfo[0].Trim();
-            cb_System.Text = RowInfo[1].Trim();
-            cb_Format.Text = RowInfo[2].Trim();
+            var NewArray = new[] { "", "", "" };
+            var split = ToSplit.Split('/');
+            Array.Copy(split, NewArray, split.Length <= 3 ? split.Length : 3);
+
+            return NewArray;
         }
     }
 }
