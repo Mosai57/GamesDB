@@ -38,7 +38,6 @@
             this.button_Search = new System.Windows.Forms.Button();
             this.lb_Results = new System.Windows.Forms.ListBox();
             this.button_Delete = new System.Windows.Forms.Button();
-            this.button_Load = new System.Windows.Forms.Button();
             this.button_Clear = new System.Windows.Forms.Button();
             this.button_Export = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -79,6 +78,7 @@
             "GBA",
             "GBC",
             "Gamecube",
+            "GOG",
             "N64",
             "NDS",
             "NES",
@@ -90,6 +90,7 @@
             "PSP",
             "PSVita",
             "SNES",
+            "Steam",
             "Switch",
             "Wii",
             "Wii U",
@@ -99,16 +100,16 @@
             this.cb_System.Location = new System.Drawing.Point(87, 38);
             this.cb_System.Name = "cb_System";
             this.cb_System.Size = new System.Drawing.Size(121, 21);
-            this.cb_System.TabIndex = 3;
+            this.cb_System.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(40, 68);
+            this.label3.Location = new System.Drawing.Point(39, 68);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 13);
+            this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Format";
+            this.label3.Text = "Format:";
             // 
             // cb_Format
             // 
@@ -121,15 +122,15 @@
             this.cb_Format.Location = new System.Drawing.Point(87, 65);
             this.cb_Format.Name = "cb_Format";
             this.cb_Format.Size = new System.Drawing.Size(121, 21);
-            this.cb_Format.TabIndex = 5;
+            this.cb_Format.TabIndex = 3;
             // 
             // button_Add
             // 
             this.button_Add.AutoSize = true;
-            this.button_Add.Location = new System.Drawing.Point(15, 115);
+            this.button_Add.Location = new System.Drawing.Point(15, 172);
             this.button_Add.Name = "button_Add";
-            this.button_Add.Size = new System.Drawing.Size(84, 23);
-            this.button_Add.TabIndex = 6;
+            this.button_Add.Size = new System.Drawing.Size(126, 23);
+            this.button_Add.TabIndex = 4;
             this.button_Add.Text = "Add";
             this.button_Add.UseVisualStyleBackColor = true;
             this.button_Add.Click += new System.EventHandler(this.button_Add_Click);
@@ -137,10 +138,10 @@
             // button_Search
             // 
             this.button_Search.AutoSize = true;
-            this.button_Search.Location = new System.Drawing.Point(105, 115);
+            this.button_Search.Location = new System.Drawing.Point(150, 172);
             this.button_Search.Name = "button_Search";
-            this.button_Search.Size = new System.Drawing.Size(84, 23);
-            this.button_Search.TabIndex = 7;
+            this.button_Search.Size = new System.Drawing.Size(129, 23);
+            this.button_Search.TabIndex = 5;
             this.button_Search.Text = "Search";
             this.button_Search.UseVisualStyleBackColor = true;
             this.button_Search.Click += new System.EventHandler(this.button_Search_Click);
@@ -153,48 +154,38 @@
             this.lb_Results.FormattingEnabled = true;
             this.lb_Results.Location = new System.Drawing.Point(289, 12);
             this.lb_Results.Name = "lb_Results";
-            this.lb_Results.Size = new System.Drawing.Size(459, 160);
-            this.lb_Results.TabIndex = 8;
+            this.lb_Results.Size = new System.Drawing.Size(459, 212);
+            this.lb_Results.TabIndex = 9;
+            this.lb_Results.SelectedIndexChanged += new System.EventHandler(this.lb_Results_SelectedIndexChanged);
             // 
             // button_Delete
             // 
             this.button_Delete.AutoSize = true;
-            this.button_Delete.Location = new System.Drawing.Point(15, 149);
+            this.button_Delete.Location = new System.Drawing.Point(15, 201);
             this.button_Delete.Name = "button_Delete";
             this.button_Delete.Size = new System.Drawing.Size(84, 23);
-            this.button_Delete.TabIndex = 9;
+            this.button_Delete.TabIndex = 6;
             this.button_Delete.Text = "Delete";
             this.button_Delete.UseVisualStyleBackColor = true;
             this.button_Delete.Click += new System.EventHandler(this.button_Delete_Click);
             // 
-            // button_Load
-            // 
-            this.button_Load.AutoSize = true;
-            this.button_Load.Location = new System.Drawing.Point(195, 115);
-            this.button_Load.Name = "button_Load";
-            this.button_Load.Size = new System.Drawing.Size(84, 23);
-            this.button_Load.TabIndex = 10;
-            this.button_Load.Text = "Load";
-            this.button_Load.UseVisualStyleBackColor = true;
-            this.button_Load.Click += new System.EventHandler(this.button_Load_Click);
-            // 
             // button_Clear
             // 
             this.button_Clear.AutoSize = true;
-            this.button_Clear.Location = new System.Drawing.Point(105, 149);
+            this.button_Clear.Location = new System.Drawing.Point(105, 201);
             this.button_Clear.Name = "button_Clear";
             this.button_Clear.Size = new System.Drawing.Size(84, 23);
-            this.button_Clear.TabIndex = 12;
+            this.button_Clear.TabIndex = 7;
             this.button_Clear.Text = "Clear";
             this.button_Clear.UseVisualStyleBackColor = true;
             this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
             // 
             // button_Export
             // 
-            this.button_Export.Location = new System.Drawing.Point(195, 149);
+            this.button_Export.Location = new System.Drawing.Point(195, 201);
             this.button_Export.Name = "button_Export";
             this.button_Export.Size = new System.Drawing.Size(84, 23);
-            this.button_Export.TabIndex = 13;
+            this.button_Export.TabIndex = 8;
             this.button_Export.Text = "Export";
             this.button_Export.UseVisualStyleBackColor = true;
             this.button_Export.Click += new System.EventHandler(this.button_Export_Click);
@@ -203,10 +194,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(760, 184);
+            this.ClientSize = new System.Drawing.Size(760, 236);
             this.Controls.Add(this.button_Export);
             this.Controls.Add(this.button_Clear);
-            this.Controls.Add(this.button_Load);
             this.Controls.Add(this.button_Delete);
             this.Controls.Add(this.lb_Results);
             this.Controls.Add(this.button_Search);
@@ -218,7 +208,6 @@
             this.Controls.Add(this.tb_GameName);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(776, 223);
             this.Name = "MainForm";
             this.Text = "GDB Access";
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -239,7 +228,6 @@
         private System.Windows.Forms.Button button_Search;
         private System.Windows.Forms.ListBox lb_Results;
         private System.Windows.Forms.Button button_Delete;
-        private System.Windows.Forms.Button button_Load;
         private System.Windows.Forms.Button button_Clear;
         private System.Windows.Forms.Button button_Export;
     }

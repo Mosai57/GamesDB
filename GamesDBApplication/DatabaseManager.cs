@@ -29,7 +29,6 @@ namespace GamesDBApplication
             }
         }
 
-        //Done
         public void AddToDB_Controller(string GameName, string SystemName, string Format)
         {
             int GameID = Convert.ToInt32(null);
@@ -56,7 +55,6 @@ namespace GamesDBApplication
             }
         }
 
-        //Done
         int AddGame(string GameName)
         {
             int GameID = 0;
@@ -70,7 +68,6 @@ namespace GamesDBApplication
             return GameID;
         }
 
-        //Done
         int AddSystem(string SystemName)
         {
             int SystemID = 0;
@@ -84,7 +81,6 @@ namespace GamesDBApplication
             return SystemID;
         }
 
-        //Done
         void AddGameSystem(int GameID, int SystemID, int FormatID)
         {
             SQLiteCommand SQL_Add_Entry = GamesDB.CreateCommand();
@@ -96,7 +92,6 @@ namespace GamesDBApplication
             SQL_Add_Entry.ExecuteNonQuery();
         }
 
-        //Done
         public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
         {
             List<string> Search_Results = new List<string>();
@@ -146,7 +141,6 @@ namespace GamesDBApplication
             return true;
         }
 
-        //Done
         int GetGameID(string GameName)
         {
             SQLiteParameter Param_GameName = new SQLiteParameter("@GameName", GameName);

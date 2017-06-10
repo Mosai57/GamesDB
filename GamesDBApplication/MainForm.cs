@@ -160,5 +160,16 @@ namespace GamesDBApplication
                 MessageBox.Show("Export completed!");
             }
         }
+
+        private void lb_Results_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string Highlighted_Data = Convert.ToString(lb_Results.SelectedItem);
+            var RowInfo = new[] { "", "", "" };
+            var split = Highlighted_Data.Split('/');
+            Array.Copy(split, RowInfo, split.Length <= 3 ? split.Length : 3);
+            tb_GameName.Text = RowInfo[0].Trim();
+            cb_System.Text = RowInfo[1].Trim();
+            cb_Format.Text = RowInfo[2].Trim();
+        }
     }
 }
