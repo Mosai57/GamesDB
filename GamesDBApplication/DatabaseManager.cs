@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SQLite;
-using System.Windows.Forms;
 
 namespace GamesDBApplication
 {
@@ -19,6 +14,7 @@ namespace GamesDBApplication
             GamesDB = new SQLiteConnection("Data Source=" + FilePath + ";Version=3");
             GamesDB.Open();
         }
+
 
         public void Dispose()
         {

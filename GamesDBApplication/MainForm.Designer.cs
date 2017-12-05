@@ -58,6 +58,7 @@
             this.tb_GameName.Name = "tb_GameName";
             this.tb_GameName.Size = new System.Drawing.Size(192, 20);
             this.tb_GameName.TabIndex = 1;
+            this.tb_GameName.TextChanged += new System.EventHandler(this.tb_GameName_TextChanged);
             // 
             // label2
             // 
@@ -129,6 +130,7 @@
             // 
             // button_Add
             // 
+            this.button_Add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Add.AutoSize = true;
             this.button_Add.Location = new System.Drawing.Point(15, 146);
             this.button_Add.Name = "button_Add";
@@ -140,6 +142,7 @@
             // 
             // button_Search
             // 
+            this.button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Search.AutoSize = true;
             this.button_Search.Location = new System.Drawing.Point(105, 146);
             this.button_Search.Name = "button_Search";
@@ -162,6 +165,7 @@
             // 
             // button_Delete
             // 
+            this.button_Delete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Delete.AutoSize = true;
             this.button_Delete.Location = new System.Drawing.Point(15, 175);
             this.button_Delete.Name = "button_Delete";
@@ -173,6 +177,7 @@
             // 
             // button_Clear
             // 
+            this.button_Clear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Clear.AutoSize = true;
             this.button_Clear.Location = new System.Drawing.Point(105, 175);
             this.button_Clear.Name = "button_Clear";
@@ -184,6 +189,7 @@
             // 
             // button_Export
             // 
+            this.button_Export.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Export.Location = new System.Drawing.Point(195, 175);
             this.button_Export.Name = "button_Export";
             this.button_Export.Size = new System.Drawing.Size(84, 23);
@@ -194,6 +200,7 @@
             // 
             // btn_Load
             // 
+            this.btn_Load.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_Load.Location = new System.Drawing.Point(195, 146);
             this.btn_Load.Name = "btn_Load";
             this.btn_Load.Size = new System.Drawing.Size(84, 23);

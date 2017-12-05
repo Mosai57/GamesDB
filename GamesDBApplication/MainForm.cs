@@ -9,6 +9,7 @@ namespace GamesDBApplication
     {
         DatabaseManager DB_Manager;
         List<string> listBoxContents;
+
         public MainForm()
         {
             InitializeComponent();
@@ -42,7 +43,8 @@ namespace GamesDBApplication
                 List<string> Results = DB_Manager.SearchDB("%", cb_System.Text, cb_Format.Text);
                 listBoxContents = Results;
                 lb_Results.DataSource = Results;
-            } catch(SQLiteException SQL_e)
+            }
+            catch (SQLiteException SQL_e)
             {
                 MessageBox.Show(Convert.ToString(SQL_e));
             }
@@ -51,13 +53,13 @@ namespace GamesDBApplication
         private void button_Search_Click(object sender, EventArgs e)
         {
             string Game_SearchTerm = tb_GameName.Text;
-            if(Game_SearchTerm == "") { Game_SearchTerm = "%"; }
+            if (Game_SearchTerm == "") { Game_SearchTerm = "%"; }
 
             string System_SearchTerm = cb_System.Text;
-            if(System_SearchTerm == "") { System_SearchTerm = "%"; }
+            if (System_SearchTerm == "") { System_SearchTerm = "%"; }
 
             string Format_SearchTerm = cb_Format.Text;
-            if(Format_SearchTerm == "") { Format_SearchTerm = "%"; }
+            if (Format_SearchTerm == "") { Format_SearchTerm = "%"; }
 
             try
             {
@@ -65,7 +67,8 @@ namespace GamesDBApplication
                 MessageBox.Show("Found " + Results.Count + " records");
                 listBoxContents = Results;
                 lb_Results.DataSource = Results;
-            } catch(SQLiteException SQL_e)
+            }
+            catch (SQLiteException SQL_e)
             {
                 MessageBox.Show(Convert.ToString(SQL_e));
             }
@@ -151,6 +154,11 @@ namespace GamesDBApplication
             Array.Copy(split, NewArray, split.Length <= 3 ? split.Length : 3);
 
             return NewArray;
+        }
+
+        private void tb_GameName_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
