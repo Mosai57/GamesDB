@@ -23,19 +23,23 @@ namespace GamesDBApplication
             }
         }
 
-        public void InitializeDatabase()
+        public void InitializeDatabase(bool NewDB = true)
         {
             GamesDB.Open();
 
-            /* Enable Pragmas
-             * Pragmas enabled:
-             *      Foreign Keys
-             */
-            SQLiteCommand EnablePragmas = GamesDB.CreateCommand();
-            string PragmaDefinitons = @"
-                PRAGMA foreign_keys = ON;
-            ";
-            EnablePragmas.CommandText = PragmaDefinitons;
+            if (NewDB)
+            {
+                /* Enable Pragmas
+                 * Pragmas enabled:
+                 *      Foreign Keys
+                 */
+                SQLiteCommand EnablePragmas = GamesDB.CreateCommand();
+                string PragmaDefinitons = @"
+                    PRAGMA foreign_keys = ON;
+                ";
+                EnablePragmas.CommandText = PragmaDefinitons;
+                EnablePragmas.ExecuteNonQuery();
+            }
 
             /* Define Game Table
              * Game table properties:
@@ -49,12 +53,13 @@ namespace GamesDBApplication
                     Game TEXT UNIQUE NOT NULL
                 );";
             DefineGameTable.CommandText = GameTableDefinition;
+            DefineGameTable.ExecuteNonQuery();
 
             /* Define System Table
              * System table properties:
              *      ID - Primary Key
              *      System name - Text, Unique
-             */ 
+             */
             SQLiteCommand DefineSystemTable = GamesDB.CreateCommand();
             string SystemTableDefinition = @"
                 CREATE TABLE Systems (
@@ -62,6 +67,7 @@ namespace GamesDBApplication
                     System TEXT UNIQIE NOT NULL
                 );";
             DefineSystemTable.CommandText = SystemTableDefinition;
+            DefineSystemTable.ExecuteNonQuery();
 
             /* Define Format Table
              * Format table properties:
@@ -75,6 +81,7 @@ namespace GamesDBApplication
                     Type TEXT UNIQUE NOT NULL
                 );";
             DefineFormatTable.CommandText = FormatTableDefinition;
+            DefineFormatTable.ExecuteNonQuery();
 
             /* Setup Format Table
              * Inserts the two values we will use in the format table
@@ -85,6 +92,7 @@ namespace GamesDBApplication
                 INSERT INTO Format(ID, Type) VALUES(2, 'Digital'); 
             ";
             SetupFormatTable.CommandText = FormatTableEntries;
+            SetupFormatTable.ExecuteNonQuery();
 
             /* Define Game System Table
              * Game system table properties:
@@ -105,14 +113,23 @@ namespace GamesDBApplication
                     CONSTRAINT pk_GameSystem PRIMARY KEY (GameID, SystemID, FormatID)
                 );";
             DefineGameSystemTable.CommandText = GameSystemTableDefinition;
-
-            // Execute commands to build tables
-            EnablePragmas.ExecuteNonQuery();
-            DefineGameTable.ExecuteNonQuery();
-            DefineSystemTable.ExecuteNonQuery();
-            DefineFormatTable.ExecuteNonQuery();
-            SetupFormatTable.ExecuteNonQuery();
             DefineGameSystemTable.ExecuteNonQuery();
+
+            GamesDB.Close();
+        }
+
+        public void ClearDatabase()
+        {
+            GamesDB.Open();
+
+            SQLiteCommand DropTables = GamesDB.CreateCommand();
+            string DropString = @"
+                DROP TABLE IF EXISTS GameSystem; 
+                DROP TABLE IF EXISTS Games; 
+                DROP TABLE IF EXISTS Systems; 
+                DROP TABLE IF EXISTS Format;";
+            DropTables.CommandText = DropString;
+            DropTables.ExecuteNonQuery();
 
             GamesDB.Close();
         }

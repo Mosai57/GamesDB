@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data.SQLite;
 
@@ -116,7 +117,12 @@ namespace GamesDBApplication
                 Search_Results.Add(Reader.GetString(0) + " / " + Reader.GetString(1) + " / " + Reader.GetString(2));
             }
 
-            return Search_Results;
+            IEnumerable<string> OrderedSearchResults = Search_Results.OrderBy(s =>
+                s.StartsWith("A ", StringComparison.OrdinalIgnoreCase) || s.StartsWith("The ", StringComparison.OrdinalIgnoreCase) ?
+                s.Substring(s.IndexOf(" ") + 1) :
+                s);
+
+            return OrderedSearchResults.ToList();
         }
 
         public bool DeleteRecord(string GameName, string SystemName, string FormatType)
@@ -206,5 +212,13 @@ namespace GamesDBApplication
 
             return FormatID;
         }
+
+        public void CloseDatabase()
+        {
+            GamesDB.Close();
+            this.Dispose();
+            GC.Collect();
+        }
+
     }
 }

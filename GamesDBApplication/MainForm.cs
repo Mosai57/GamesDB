@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Data.SQLite;
@@ -10,6 +11,7 @@ namespace GamesDBApplication
         DatabaseManager DB_Manager;
         List<string> listBoxContents;
         string DatabaseSource;
+
         public MainForm(string FilePath)
         {
             InitializeComponent();
@@ -19,6 +21,14 @@ namespace GamesDBApplication
         private void MainForm_Load(object sender, EventArgs e)
         {
             DB_Manager = new DatabaseManager(DatabaseSource);
+            LoadDatabaseContents();
+        }
+
+        private void LoadDatabaseContents()
+        {
+            List<string> Results = DB_Manager.SearchDB("%", "%", "%");
+            listBoxContents = Results;
+            lb_Results.DataSource = Results;
         }
 
         private void button_Add_Click(object sender, EventArgs e)
@@ -37,7 +47,7 @@ namespace GamesDBApplication
             {
                 DB_Manager.AddToDB_Controller(GameName, SystemName, Format);
 
-                MessageBox.Show("Added Record:\n" + GameName + " / " + SystemName + " / " + Format);
+                //MessageBox.Show("Added Record:\n" + GameName + " / " + SystemName + " / " + Format);
                 tb_GameName.Clear();
                 tb_GameName.Focus();
 
@@ -104,7 +114,7 @@ namespace GamesDBApplication
                     Deleted = DB_Manager.DeleteRecord(GameName, SystemName, FormatType);
                     if (Deleted)
                     {
-                        MessageBox.Show("Record deleted");
+                        //MessageBox.Show("Record deleted");
 
                         string systemText = cb_System.Text;
                         if (systemText == "") { systemText = "%"; }
@@ -124,7 +134,7 @@ namespace GamesDBApplication
             }
         }
 
-        private void button_Clear_Click(object sender, EventArgs e)
+        private void ClearForm()
         {
             tb_GameName.Clear();
             cb_Format.Text = "";
@@ -160,6 +170,20 @@ namespace GamesDBApplication
         private void tb_GameName_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void initializeDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"InduljNet\Gdba", "GDBA.sdb");
+            DB_Manager.CloseDatabase();
+            DatabaseInitializer Initializer = new DatabaseInitializer(DatabasePath);
+
+            Initializer.ClearDatabase();
+            Initializer.InitializeDatabase(false); // false indicating db exists, tables dont.
+
+            DB_Manager = new DatabaseManager(DatabasePath);
+            ClearForm();
+            LoadDatabaseContents();
         }
     }
 }

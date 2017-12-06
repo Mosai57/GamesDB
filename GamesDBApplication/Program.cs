@@ -21,7 +21,6 @@ namespace GamesDBApplication
             // Initialize path
             System.IO.Directory.CreateDirectory(FilePath);
             FilePath = Path.Combine(FilePath, filename);
-
             if (!File.Exists(FilePath))
             {
                 MessageBox.Show("Database not found. Initializing.", "Initialization");
