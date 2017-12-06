@@ -16,14 +16,17 @@ namespace GamesDBApplication
         [STAThread]
         static void Main()
         {
-            string UserName = Environment.UserName;
-            string FilePath = "C:\\Users\\" + UserName + "\\db\\Games.sdb";
+            string filename = "GDBA.sdb";
+            string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"InduljNet\Gdba");
+            // Initialize path
+            System.IO.Directory.CreateDirectory(FilePath);
+            FilePath = Path.Combine(FilePath, filename);
 
             if (!File.Exists(FilePath))
             {
                 MessageBox.Show("Database not found. Initializing.", "Initialization");
 
-                DatabaseInitializer initializer = new DatabaseInitializer();
+                DatabaseInitializer initializer = new DatabaseInitializer(FilePath);
                 initializer.InitializeDatabase();
                 initializer.Dispose();
 
@@ -32,7 +35,7 @@ namespace GamesDBApplication
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new MainForm(FilePath));
         }
     }
 }

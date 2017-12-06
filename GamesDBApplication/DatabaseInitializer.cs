@@ -9,10 +9,8 @@ namespace GamesDBApplication
     {
         private SQLiteConnection GamesDB;
 
-        public DatabaseInitializer()
+        public DatabaseInitializer(string FilePath)
         {
-            string UserName = Environment.UserName;
-            string FilePath = "C:\\Users\\" + UserName + "\\db\\Games.sdb";
             GamesDB = new SQLiteConnection("Data Source=" + FilePath + ";version=3;");
         }
 

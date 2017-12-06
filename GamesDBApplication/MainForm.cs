@@ -9,15 +9,16 @@ namespace GamesDBApplication
     {
         DatabaseManager DB_Manager;
         List<string> listBoxContents;
-
-        public MainForm()
+        string DatabaseSource;
+        public MainForm(string FilePath)
         {
             InitializeComponent();
+            DatabaseSource = FilePath;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            DB_Manager = new DatabaseManager();
+            DB_Manager = new DatabaseManager(DatabaseSource);
         }
 
         private void button_Add_Click(object sender, EventArgs e)

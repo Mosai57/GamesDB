@@ -7,11 +7,10 @@ namespace GamesDBApplication
     class DatabaseManager : IDisposable
     {
         private SQLiteConnection GamesDB;
-        public DatabaseManager()
+        public DatabaseManager(string FilePath)
         {
-            string UserName = Environment.UserName;
-            string FilePath = "C:\\Users\\" + UserName + "\\db\\Games.sdb";
-            GamesDB = new SQLiteConnection("Data Source=" + FilePath + ";Version=3");
+            string DatabaseSource = FilePath;
+            GamesDB = new SQLiteConnection("Data Source=" + DatabaseSource + ";Version=3");
             GamesDB.Open();
         }
 
