@@ -17,7 +17,7 @@ namespace GamesDBApplication
         static void Main()
         {
             string filename = "GDBA.sdb";
-            string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"InduljNet\Gdba");
+            string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"InduljNet\Gdba");
             // Initialize path
             System.IO.Directory.CreateDirectory(FilePath);
             FilePath = Path.Combine(FilePath, filename);
