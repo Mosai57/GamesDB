@@ -14,7 +14,6 @@ namespace GamesDBApplication
             string UserName = Environment.UserName;
             string FilePath = "C:\\Users\\" + UserName + "\\db\\Games.sdb";
             GamesDB = new SQLiteConnection("Data Source=" + FilePath + ";version=3;");
-            //GamesDB.Open();
         }
 
         public void Dispose()
@@ -30,12 +29,21 @@ namespace GamesDBApplication
         {
             GamesDB.Open();
 
+            /* Enable Pragmas
+             * Pragmas enabled:
+             *      Foreign Keys
+             */
             SQLiteCommand EnablePragmas = GamesDB.CreateCommand();
             string PragmaDefinitons = @"
                 PRAGMA foreign_keys = ON;
             ";
             EnablePragmas.CommandText = PragmaDefinitons;
 
+            /* Define Game Table
+             * Game table properties:
+             *      ID - Primary Key
+             *      Game name - Text, Unique
+             */ 
             SQLiteCommand DefineGameTable = GamesDB.CreateCommand();
             string GameTableDefinition = @"
                 CREATE TABLE Games(
@@ -44,14 +52,24 @@ namespace GamesDBApplication
                 );";
             DefineGameTable.CommandText = GameTableDefinition;
 
+            /* Define System Table
+             * System table properties:
+             *      ID - Primary Key
+             *      System name - Text, Unique
+             */ 
             SQLiteCommand DefineSystemTable = GamesDB.CreateCommand();
             string SystemTableDefinition = @"
                 CREATE TABLE Systems (
                     ID INTEGER PRIMARY KEY NOT NULL,
-                    System TEXT UNUQIE NOT NULL
+                    System TEXT UNIQIE NOT NULL
                 );";
             DefineSystemTable.CommandText = SystemTableDefinition;
 
+            /* Define Format Table
+             * Format table properties:
+             *      ID - Primary key
+             *      Format name - Text, Unique
+             */
             SQLiteCommand DefineFormatTable = GamesDB.CreateCommand();
             string FormatTableDefinition = @"
                 CREATE TABLE Format (
@@ -60,6 +78,9 @@ namespace GamesDBApplication
                 );";
             DefineFormatTable.CommandText = FormatTableDefinition;
 
+            /* Setup Format Table
+             * Inserts the two values we will use in the format table
+             */
             SQLiteCommand SetupFormatTable = GamesDB.CreateCommand();
             string FormatTableEntries = @"
                 INSERT INTO Format (ID, Type) VALUES (1, 'Physical');
@@ -67,6 +88,13 @@ namespace GamesDBApplication
             ";
             SetupFormatTable.CommandText = FormatTableEntries;
 
+            /* Define Game System Table
+             * Game system table properties:
+             *      GameID - Integer, FK referencing Game table ID
+             *      SystemID - Integer, FK referencing System table ID
+             *      FormatID - Integer, FK referencing Format table ID
+             *      Primary key consisting of GameID, SystemID, and FormatID
+             */
             SQLiteCommand DefineGameSystemTable = GamesDB.CreateCommand();
             string GameSystemTableDefinition = @"
                 CREATE TABLE GameSystem (
