@@ -43,7 +43,12 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.initializeDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backupDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label4 = new System.Windows.Forms.Label();
+            this.lbl_NoEntries = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,13 +89,11 @@
             this.cb_System.Items.AddRange(new object[] {
             "",
             "3DS",
-            "Battle.net",
             "Gamecube",
             "GB",
             "GBA",
             "GBC",
             "Genesis",
-            "GOG",
             "N64",
             "NDS",
             "NES",
@@ -102,7 +105,6 @@
             "PSP",
             "PSVita",
             "SNES",
-            "Steam",
             "Switch",
             "Wii",
             "Wii U",
@@ -112,7 +114,7 @@
             this.cb_System.Location = new System.Drawing.Point(87, 72);
             this.cb_System.Name = "cb_System";
             this.cb_System.Size = new System.Drawing.Size(160, 21);
-            this.cb_System.TabIndex = 2;
+            this.cb_System.TabIndex = 3;
             // 
             // label3
             // 
@@ -136,7 +138,7 @@
             this.cb_Format.Location = new System.Drawing.Point(87, 101);
             this.cb_Format.Name = "cb_Format";
             this.cb_Format.Size = new System.Drawing.Size(160, 21);
-            this.cb_Format.TabIndex = 3;
+            this.cb_Format.TabIndex = 5;
             // 
             // button_Add
             // 
@@ -145,7 +147,7 @@
             this.button_Add.Location = new System.Drawing.Point(323, 41);
             this.button_Add.Name = "button_Add";
             this.button_Add.Size = new System.Drawing.Size(105, 23);
-            this.button_Add.TabIndex = 4;
+            this.button_Add.TabIndex = 2;
             this.button_Add.Text = "Add";
             this.button_Add.UseVisualStyleBackColor = true;
             this.button_Add.Click += new System.EventHandler(this.button_Add_Click);
@@ -157,18 +159,20 @@
             this.button_Search.Location = new System.Drawing.Point(323, 70);
             this.button_Search.Name = "button_Search";
             this.button_Search.Size = new System.Drawing.Size(105, 23);
-            this.button_Search.TabIndex = 5;
+            this.button_Search.TabIndex = 4;
             this.button_Search.Text = "Search";
             this.button_Search.UseVisualStyleBackColor = true;
             this.button_Search.Click += new System.EventHandler(this.button_Search_Click);
             // 
             // lb_Results
             // 
-            this.lb_Results.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.lb_Results.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_Results.FormattingEnabled = true;
             this.lb_Results.Location = new System.Drawing.Point(12, 186);
             this.lb_Results.Name = "lb_Results";
+            this.lb_Results.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lb_Results.Size = new System.Drawing.Size(416, 238);
             this.lb_Results.TabIndex = 10;
             // 
@@ -190,7 +194,7 @@
             this.button_Export.Location = new System.Drawing.Point(323, 157);
             this.button_Export.Name = "button_Export";
             this.button_Export.Size = new System.Drawing.Size(105, 23);
-            this.button_Export.TabIndex = 9;
+            this.button_Export.TabIndex = 8;
             this.button_Export.Text = "Export";
             this.button_Export.UseVisualStyleBackColor = true;
             this.button_Export.Click += new System.EventHandler(this.button_Export_Click);
@@ -210,7 +214,8 @@
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.ControlDark;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(440, 24);
@@ -220,7 +225,8 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.initializeDatabaseToolStripMenuItem});
+            this.initializeDatabaseToolStripMenuItem,
+            this.backupDatabaseToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -232,20 +238,63 @@
             this.initializeDatabaseToolStripMenuItem.Text = "Initialize Database";
             this.initializeDatabaseToolStripMenuItem.Click += new System.EventHandler(this.initializeDatabaseToolStripMenuItem_Click);
             // 
+            // backupDatabaseToolStripMenuItem
+            // 
+            this.backupDatabaseToolStripMenuItem.Name = "backupDatabaseToolStripMenuItem";
+            this.backupDatabaseToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.backupDatabaseToolStripMenuItem.Text = "Backup Database";
+            this.backupDatabaseToolStripMenuItem.Click += new System.EventHandler(this.backupDatabaseToolStripMenuItem_Click_1);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToolStripMenuItem,
+            this.selectAllToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            // 
+            // selectAllToolStripMenuItem
+            // 
+            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.selectAllToolStripMenuItem.Text = "Select All";
+            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
+            // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 170);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(79, 13);
+            this.label4.Size = new System.Drawing.Size(129, 13);
             this.label4.TabIndex = 12;
-            this.label4.Text = "Search Results";
+            this.label4.Text = "Search Results:    Entries:";
+            // 
+            // lbl_NoEntries
+            // 
+            this.lbl_NoEntries.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbl_NoEntries.AutoSize = true;
+            this.lbl_NoEntries.Location = new System.Drawing.Point(147, 170);
+            this.lbl_NoEntries.Name = "lbl_NoEntries";
+            this.lbl_NoEntries.Size = new System.Drawing.Size(0, 13);
+            this.lbl_NoEntries.TabIndex = 13;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(440, 436);
+            this.Controls.Add(this.lbl_NoEntries);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btn_Load);
             this.Controls.Add(this.button_Export);
@@ -291,6 +340,11 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem initializeDatabaseToolStripMenuItem;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lbl_NoEntries;
+        private System.Windows.Forms.ToolStripMenuItem backupDatabaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
     }
 }
 

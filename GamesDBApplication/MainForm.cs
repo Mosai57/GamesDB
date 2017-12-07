@@ -29,6 +29,7 @@ namespace GamesDBApplication
             List<string> Results = DB_Manager.SearchDB("%", "%", "%");
             listBoxContents = Results;
             lb_Results.DataSource = Results;
+            lbl_NoEntries.Text = listBoxContents.Count.ToString();
         }
 
         private void button_Add_Click(object sender, EventArgs e)
@@ -54,6 +55,7 @@ namespace GamesDBApplication
                 List<string> Results = DB_Manager.SearchDB("%", cb_System.Text, cb_Format.Text);
                 listBoxContents = Results;
                 lb_Results.DataSource = Results;
+                lbl_NoEntries.Text = listBoxContents.Count.ToString();
             }
             catch (SQLiteException SQL_e)
             {
@@ -65,6 +67,7 @@ namespace GamesDBApplication
         {
             string Game_SearchTerm = tb_GameName.Text;
             if (Game_SearchTerm == "") { Game_SearchTerm = "%"; }
+            else { Game_SearchTerm = string.Concat(Game_SearchTerm, "%"); } // Allow for loose searching
 
             string System_SearchTerm = cb_System.Text;
             if (System_SearchTerm == "") { System_SearchTerm = "%"; }
@@ -75,9 +78,10 @@ namespace GamesDBApplication
             try
             {
                 List<string> Results = DB_Manager.SearchDB(Game_SearchTerm, System_SearchTerm, Format_SearchTerm);
-                MessageBox.Show("Found " + Results.Count + " records");
+                //MessageBox.Show("Found " + Results.Count + " records");
                 listBoxContents = Results;
                 lb_Results.DataSource = Results;
+                lbl_NoEntries.Text = listBoxContents.Count.ToString();
             }
             catch (SQLiteException SQL_e)
             {
@@ -124,6 +128,7 @@ namespace GamesDBApplication
                         List<string> Results = DB_Manager.SearchDB("%", systemText, formatText);
                         listBoxContents = Results;
                         lb_Results.DataSource = Results;
+                        lbl_NoEntries.Text = listBoxContents.Count.ToString();
                     }
                     else
                     {
@@ -184,6 +189,41 @@ namespace GamesDBApplication
             DB_Manager = new DatabaseManager(DatabasePath);
             ClearForm();
             LoadDatabaseContents();
+        }
+
+        private void backupDatabaseToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.FileName = "GDBA_Backup.sdb";
+            saveFile.InitialDirectory = Convert.ToString(Environment.SpecialFolder.MyDocuments);
+            saveFile.Filter = "SQLite Database File (*.sdb)|*.sdb";
+            saveFile.FilterIndex = 1;
+
+            if (saveFile.ShowDialog() == DialogResult.OK)
+            {
+                System.IO.File.Copy(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"InduljNet\Gdba", "GDBA.sdb"), saveFile.FileName);
+                MessageBox.Show("Backup Complete");
+            }
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string outputString = "";
+            List<string> selections = new List<string>();
+            foreach(object o in lb_Results.SelectedItems)
+            {
+                selections.Add(o.ToString());
+            }
+            outputString = string.Join("\n", selections.ToArray());
+            Clipboard.SetText(outputString);
+        }
+
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for(int i = 0; i < lb_Results.Items.Count; i++)
+            {
+                lb_Results.SetSelected(i, true);
+            }
         }
     }
 }

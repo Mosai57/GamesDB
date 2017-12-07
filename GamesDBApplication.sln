@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesDBApplication", "GamesDBApplication\GamesDBApplication.csproj", "{5E8BEC68-4A02-48BF-B9F3-86DB3C946BA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GDBAccess", "GamesDBApplication\GDBAccess.csproj", "{5E8BEC68-4A02-48BF-B9F3-86DB3C946BA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{541AE404-090D-4BD8-83E5-AD9EC2713870}"
 	ProjectSection(SolutionItems) = preProject
@@ -39,5 +39,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{38F0DDF6-3FB0-41C2-9959-1F55AD3F2094} = {CD1AD575-FB87-409F-8EF3-EA7E5D4AA37B}
 		{FE5007C8-CC16-4A5E-8482-AF7C10EF0EA6} = {38F0DDF6-3FB0-41C2-9959-1F55AD3F2094}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {96EEE7EE-E597-49C2-A479-6BFC230F9CB2}
 	EndGlobalSection
 EndGlobal
