@@ -96,13 +96,12 @@ namespace GamesDBApplication
 
             SQLiteCommand SQL_Get_Rows = GamesDB.CreateCommand();
             SQL_Get_Rows.CommandText = 
-                @"SELECT Game, Platform, Format, Date
+                @"SELECT Game, Platform, Format
                   FROM( 
                     SELECT 
                         Games.Game AS Game, 
                         Systems.System AS Platform, 
                         Format.Type AS Format,
-                        DateAdded as Date
                     FROM 
                         GameSystem 
                     INNER JOIN Games ON GameSystem.GameID = Games.ID 
