@@ -10,18 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		README.txt = README.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Additional Resources", "Additional Resources", "{CD1AD575-FB87-409F-8EF3-EA7E5D4AA37B}"
-	ProjectSection(SolutionItems) = preProject
-		Additional Resources\SetupDB.bat = Additional Resources\SetupDB.bat
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{38F0DDF6-3FB0-41C2-9959-1F55AD3F2094}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database_Backup", "Database_Backup", "{FE5007C8-CC16-4A5E-8482-AF7C10EF0EA6}"
-	ProjectSection(SolutionItems) = preProject
-		Additional Resources\Data\Database_Backup\Games.sdb = Additional Resources\Data\Database_Backup\Games.sdb
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +23,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{38F0DDF6-3FB0-41C2-9959-1F55AD3F2094} = {CD1AD575-FB87-409F-8EF3-EA7E5D4AA37B}
-		{FE5007C8-CC16-4A5E-8482-AF7C10EF0EA6} = {38F0DDF6-3FB0-41C2-9959-1F55AD3F2094}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96EEE7EE-E597-49C2-A479-6BFC230F9CB2}

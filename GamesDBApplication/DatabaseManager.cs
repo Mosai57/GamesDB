@@ -30,6 +30,7 @@ namespace GamesDBApplication
             int GameID = Convert.ToInt32(null);
             int SystemID = Convert.ToInt32(null);
             int FormatID = Convert.ToInt32(null);
+            string DateAdded = DateTime.Now.ToString("yyyyMMddHHmmss");
 
             GameID = GetGameID(GameName);
             if (GameID == 0)
@@ -47,7 +48,7 @@ namespace GamesDBApplication
 
             if(GameID != 0 && SystemID != 0 && FormatID != 0)
             {
-                AddGameSystem(GameID, SystemID, FormatID);
+                AddGameSystem(GameID, SystemID, FormatID, DateAdded);
             }
         }
 
@@ -77,13 +78,14 @@ namespace GamesDBApplication
             return SystemID;
         }
 
-        void AddGameSystem(int GameID, int SystemID, int FormatID)
+        void AddGameSystem(int GameID, int SystemID, int FormatID, string DateAdded)
         {
             SQLiteCommand SQL_Add_Entry = GamesDB.CreateCommand();
-            SQL_Add_Entry.CommandText = "INSERT INTO GameSystem (GameID, SystemID, FormatID) Values (@GameID, @SystemID, @FormatID)";
+            SQL_Add_Entry.CommandText = "INSERT INTO GameSystem (GameID, SystemID, FormatID, DateAdded) Values (@GameID, @SystemID, @FormatID, @DateAdded)";
             SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@GameID", GameID));
             SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@SystemID", SystemID));
             SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@FormatID", FormatID));
+            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@DateAdded", DateAdded));
 
             SQL_Add_Entry.ExecuteNonQuery();
         }
@@ -94,12 +96,13 @@ namespace GamesDBApplication
 
             SQLiteCommand SQL_Get_Rows = GamesDB.CreateCommand();
             SQL_Get_Rows.CommandText = 
-                @"SELECT Game, Platform, Format 
+                @"SELECT Game, Platform, Format, Date
                   FROM( 
                     SELECT 
                         Games.Game AS Game, 
                         Systems.System AS Platform, 
-                        Format.Type AS Format 
+                        Format.Type AS Format,
+                        DateAdded as Date
                     FROM 
                         GameSystem 
                     INNER JOIN Games ON GameSystem.GameID = Games.ID 
@@ -121,7 +124,6 @@ namespace GamesDBApplication
                 s.StartsWith("A ", StringComparison.OrdinalIgnoreCase) || s.StartsWith("The ", StringComparison.OrdinalIgnoreCase) ?
                 s.Substring(s.IndexOf(" ") + 1) :
                 s);
-
             return OrderedSearchResults.ToList();
         }
 
@@ -219,6 +221,5 @@ namespace GamesDBApplication
             this.Dispose();
             GC.Collect();
         }
-
     }
 }
