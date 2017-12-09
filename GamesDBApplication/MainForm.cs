@@ -1,8 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Data.SQLite;
+using System.IO;
+using System.Windows.Forms;
 
 namespace GamesDBApplication
 {
@@ -24,9 +24,9 @@ namespace GamesDBApplication
             LoadDatabaseContents();
         }
 
-        private void LoadDatabaseContents()
+        private void LoadDatabaseContents(string Game = "%", string System = "%", string Format = "%")
         {
-            List<string> Results = DB_Manager.SearchDB("%", "%", "%");
+            List<string> Results = DB_Manager.SearchDB(Game, System, Format);
             listBoxContents = Results;
             lb_Results.DataSource = Results;
             lbl_NoEntries.Text = listBoxContents.Count.ToString();
@@ -52,10 +52,7 @@ namespace GamesDBApplication
                 tb_GameName.Clear();
                 tb_GameName.Focus();
 
-                List<string> Results = DB_Manager.SearchDB("%", cb_System.Text, cb_Format.Text);
-                listBoxContents = Results;
-                lb_Results.DataSource = Results;
-                lbl_NoEntries.Text = listBoxContents.Count.ToString();
+                LoadDatabaseContents("%", cb_System.Text, cb_Format.Text);
             }
             catch (SQLiteException SQL_e)
             {
@@ -67,7 +64,7 @@ namespace GamesDBApplication
         {
             string Game_SearchTerm = tb_GameName.Text;
             if (Game_SearchTerm == "") { Game_SearchTerm = "%"; }
-            else { Game_SearchTerm = string.Concat(Game_SearchTerm, "%"); } // Allow for loose searching
+            else { Game_SearchTerm = string.Concat("%", Game_SearchTerm, "%"); } // Allow for loose searching
 
             string System_SearchTerm = cb_System.Text;
             if (System_SearchTerm == "") { System_SearchTerm = "%"; }
@@ -77,11 +74,7 @@ namespace GamesDBApplication
 
             try
             {
-                List<string> Results = DB_Manager.SearchDB(Game_SearchTerm, System_SearchTerm, Format_SearchTerm);
-                //MessageBox.Show("Found " + Results.Count + " records");
-                listBoxContents = Results;
-                lb_Results.DataSource = Results;
-                lbl_NoEntries.Text = listBoxContents.Count.ToString();
+                LoadDatabaseContents(Game_SearchTerm, System_SearchTerm, Format_SearchTerm);
             }
             catch (SQLiteException SQL_e)
             {
@@ -125,10 +118,7 @@ namespace GamesDBApplication
                         string formatText = cb_Format.Text;
                         if (formatText == "") { formatText = "%"; }
 
-                        List<string> Results = DB_Manager.SearchDB("%", systemText, formatText);
-                        listBoxContents = Results;
-                        lb_Results.DataSource = Results;
-                        lbl_NoEntries.Text = listBoxContents.Count.ToString();
+                        LoadDatabaseContents("%", systemText, formatText);
                     }
                     else
                     {
@@ -224,6 +214,19 @@ namespace GamesDBApplication
             {
                 lb_Results.SetSelected(i, true);
             }
+        }
+
+        private void updateDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"InduljNet\Gdba", "GDBA.sdb");
+            DB_Manager.CloseDatabase();
+            DatabaseInitializer Initializer = new DatabaseInitializer(DatabasePath);
+
+            Initializer.UpdateDatabase();
+
+            DB_Manager = new DatabaseManager(DatabasePath);
+            ClearForm();
+            LoadDatabaseContents();
         }
     }
 }
