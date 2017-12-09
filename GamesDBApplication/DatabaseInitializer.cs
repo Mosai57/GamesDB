@@ -107,6 +107,7 @@ namespace GamesDBApplication
                     GameID INTEGER NOT NULL,
                     SystemID INTEGER NOT NULL,
                     FormatID INTEGER NOT NULL,
+                    DateAdded TEXT NOT NULL,
                     CONSTRAINT fk_GameSystem_Game FOREIGN KEY (GameID) REFERENCES Games(ID),
                     CONSTRAINT fk_GameSystem_System FOREIGN KEY (SystemID) REFERENCES Systems(ID),
                     CONSTRAINT fk_GameSystem_Format FOREIGN KEY (FormatID) REFERENCES Format(ID),
@@ -114,6 +115,51 @@ namespace GamesDBApplication
                 );";
             DefineGameSystemTable.CommandText = GameSystemTableDefinition;
             DefineGameSystemTable.ExecuteNonQuery();
+
+            GamesDB.Close();
+        }
+
+        public void UpdateDatabase()
+        {
+            GamesDB.Open();
+
+            /* We rename the GameSystems table to GameSystems_Prev
+             * in order to be able to copy the existing data to a new
+             * GameSystems table in the new proper format.
+             */
+            SQLiteCommand BackupGameSystems = GamesDB.CreateCommand();
+            string BackupString = @"
+                PRAGMA foreign_keys=off;
+                ALTER TABLE GameSystem RENAME TO GameSystem_Prev;
+            ";
+            BackupGameSystems.CommandText = BackupString;
+            BackupGameSystems.ExecuteNonQuery();
+
+            SQLiteCommand DefineGameSystems = GamesDB.CreateCommand();
+            string UpdateString = @"
+                CREATE TABLE GameSystem (
+                    GameID INTEGER NOT NULL,
+                    SystemID INTEGER NOT NULL,
+                    FormatID INTEGER NOT NULL,
+                    DateAdded TEXT NULL,
+                    CONSTRAINT fk_GameSystem_Game FOREIGN KEY (GameID) REFERENCES Games(ID),
+                    CONSTRAINT fk_GameSystem_System FOREIGN KEY (SystemID) REFERENCES Systems(ID),
+                    CONSTRAINT fk_GameSystem_Format FOREIGN KEY (FormatID) REFERENCES Format(ID),
+                    CONSTRAINT pk_GameSystem PRIMARY KEY (GameID, SystemID, FormatID)
+                );";
+            DefineGameSystems.CommandText = UpdateString;
+            DefineGameSystems.ExecuteNonQuery();
+
+            SQLiteCommand RebuildGameSystems = GamesDB.CreateCommand();
+            string RebuildString = @"
+                INSERT INTO GameSystem (GameID, SystemID, FormatID)
+                SELECT GameID, SystemID, FormatID
+                FROM GameSystem_Prev;
+                DROP TABLE GameSystem_Prev;
+                PRAGMA foreign_keys=on;
+            ";
+            RebuildGameSystems.CommandText = RebuildString;
+            RebuildGameSystems.ExecuteNonQuery();
 
             GamesDB.Close();
         }
