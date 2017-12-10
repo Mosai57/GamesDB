@@ -90,7 +90,7 @@ namespace GamesDBApplication
             SQL_Add_Entry.ExecuteNonQuery();
         }
 
-        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
+        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm, string ViewType)
         {
             List<string> Search_Results = new List<string>();
 
@@ -101,7 +101,7 @@ namespace GamesDBApplication
                     SELECT 
                         Games.Game AS Game, 
                         Systems.System AS Platform, 
-                        Format.Type AS Format,
+                        Format.Type AS Format
                     FROM 
                         GameSystem 
                     INNER JOIN Games ON GameSystem.GameID = Games.ID 
