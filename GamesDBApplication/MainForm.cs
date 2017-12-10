@@ -11,6 +11,8 @@ namespace GamesDBApplication
         DatabaseManager DB_Manager;
         List<string> listBoxContents;
         string DatabaseSource;
+        string ViewType = "Game";
+        string OrderType = "ASC";
 
         public MainForm(string FilePath)
         {
@@ -26,7 +28,7 @@ namespace GamesDBApplication
 
         private void LoadDatabaseContents(string Game = "%", string System = "%", string Format = "%")
         {
-            List<string> Results = DB_Manager.SearchDB(Game, System, Format);
+            List<string> Results = DB_Manager.SearchDB(Game, System, Format, ViewType, OrderType);
             listBoxContents = Results;
             lb_Results.DataSource = Results;
             lbl_NoEntries.Text = listBoxContents.Count.ToString();
@@ -160,11 +162,6 @@ namespace GamesDBApplication
             Array.Copy(split, NewArray, split.Length <= 3 ? split.Length : 3);
 
             return NewArray;
-        }
-
-        private void tb_GameName_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void initializeDatabaseToolStripMenuItem_Click(object sender, EventArgs e)

@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="DatabaseInitializer.cs" />
     <Compile Include="DatabaseManager.cs" />
+    <Compile Include="DatabaseOutputFormatter.cs" />
     <Compile Include="Export.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.tb_GameName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cb_System = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -50,6 +49,7 @@
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label4 = new System.Windows.Forms.Label();
             this.lbl_NoEntries = new System.Windows.Forms.Label();
+            this.tb_GameName = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,16 +61,6 @@
             this.label1.Size = new System.Drawing.Size(69, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Game Name:";
-            // 
-            // tb_GameName
-            // 
-            this.tb_GameName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_GameName.Location = new System.Drawing.Point(87, 43);
-            this.tb_GameName.Name = "tb_GameName";
-            this.tb_GameName.Size = new System.Drawing.Size(213, 20);
-            this.tb_GameName.TabIndex = 1;
-            this.tb_GameName.TextChanged += new System.EventHandler(this.tb_GameName_TextChanged);
             // 
             // label2
             // 
@@ -298,11 +288,21 @@
             this.lbl_NoEntries.Size = new System.Drawing.Size(0, 13);
             this.lbl_NoEntries.TabIndex = 13;
             // 
+            // tb_GameName
+            // 
+            this.tb_GameName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_GameName.Location = new System.Drawing.Point(87, 43);
+            this.tb_GameName.Name = "tb_GameName";
+            this.tb_GameName.Size = new System.Drawing.Size(230, 20);
+            this.tb_GameName.TabIndex = 14;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(440, 436);
+            this.Controls.Add(this.tb_GameName);
             this.Controls.Add(this.lbl_NoEntries);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btn_Load);
@@ -315,7 +315,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cb_System);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.tb_GameName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -334,7 +333,6 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tb_GameName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cb_System;
         private System.Windows.Forms.Label label3;
@@ -355,6 +353,7 @@
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateDatabaseToolStripMenuItem;
+        private System.Windows.Forms.TextBox tb_GameName;
     }
 }
 

@@ -90,7 +90,7 @@ namespace GamesDBApplication
             SQL_Add_Entry.ExecuteNonQuery();
         }
 
-        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm, string ViewType)
+        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm, string ViewType, string OrderType)
         {
             List<string> Search_Results = new List<string>();
 
@@ -108,22 +108,21 @@ namespace GamesDBApplication
                     INNER JOIN Systems ON GameSystem.SystemID = Systems.ID 
                     INNER JOIN Format ON GameSystem.FormatID = Format.ID 
                   ) WHERE Game LIKE @GameTerm AND Platform LIKE @SystemTerm AND Format LIKE @FormatTerm 
-                  ORDER BY Game ASC";
+                  ORDER BY @Type @Order";
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@GameTerm", Game_SearchTerm));
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@SystemTerm", System_SearchTerm));
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@FormatTerm", Format_SearchTerm));
+            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@Type", ViewType));
+            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@Order", OrderType));
 
             SQLiteDataReader Reader = SQL_Get_Rows.ExecuteReader();
+
             while (Reader.Read())
             {
                 Search_Results.Add(Reader.GetString(0) + " / " + Reader.GetString(1) + " / " + Reader.GetString(2));
             }
 
-            IEnumerable<string> OrderedSearchResults = Search_Results.OrderBy(s =>
-                s.StartsWith("A ", StringComparison.OrdinalIgnoreCase) || s.StartsWith("The ", StringComparison.OrdinalIgnoreCase) ?
-                s.Substring(s.IndexOf(" ") + 1) :
-                s);
-            return OrderedSearchResults.ToList();
+            return Search_Results;
         }
 
         public bool DeleteRecord(string GameName, string SystemName, string FormatType)
