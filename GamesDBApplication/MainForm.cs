@@ -48,7 +48,6 @@ namespace GDBAccess
             {
                 DB_Manager.AddToDB_Controller(GameName, SystemName, Format);
 
-                //MessageBox.Show("Added Record:\n" + GameName + " / " + SystemName + " / " + Format);
                 tb_GameName.Clear();
                 tb_GameName.Focus();
 
@@ -111,8 +110,6 @@ namespace GDBAccess
                     Deleted = DB_Manager.DeleteRecord(GameName, SystemName, FormatType);
                     if (Deleted)
                     {
-                        //MessageBox.Show("Record deleted");
-
                         string systemText = cb_System.Text;
                         if (systemText == "") { systemText = "%"; }
                         string formatText = cb_Format.Text;

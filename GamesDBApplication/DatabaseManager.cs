@@ -33,19 +33,11 @@ namespace GDBAccess
             string DateAdded = DateTime.Now.ToString("yyyyMMddHHmmss");
 
             GameID = GetGameID(GameName);
-            if (GameID == 0)
-            {
-                GameID = AddGame(GameName);
-            }
-
             SystemID = GetSystemID(SystemName);
-            if (SystemID == 0)
-            {
-                SystemID = AddSystem(SystemName);
-            }
-
             FormatID = GetFormatID(Format);
 
+            // Secondary check to ensure no garbage data is added.
+            // Above functions do attempt to ensure no 0s are returned.
             if(GameID != 0 && SystemID != 0 && FormatID != 0)
             {
                 AddGameSystem(GameID, SystemID, FormatID, DateAdded);
@@ -144,11 +136,9 @@ namespace GDBAccess
 
         int GetGameID(string GameName)
         {
-            SQLiteParameter Param_GameName = new SQLiteParameter("@GameName", GameName);
-
             SQLiteCommand SQL_Get_RowID = GamesDB.CreateCommand();
             SQL_Get_RowID.CommandText = "SELECT ID FROM Games WHERE Game=@GameName";
-            SQL_Get_RowID.Parameters.Add(Param_GameName);
+            SQL_Get_RowID.Parameters.Add(new SQLiteParameter("@GameName", GameName));
             SQLiteDataReader RowIDFetch = SQL_Get_RowID.ExecuteReader();
 
             int RowID = Convert.ToInt32(null);
@@ -164,17 +154,18 @@ namespace GDBAccess
                 return RowID;
             }else
             {
-                return 0;
+                return AddGame(GameName);
             }  
         }
 
+        // Fetches the RowID for the System Name
+        // If System Name is not found in the database
+        // the Name is added and the new RowID is returned
         int GetSystemID(string SystemName)
         {
-            SQLiteParameter Param_SystemName = new SQLiteParameter("@SystemName", SystemName);
-
             SQLiteCommand SQL_Get_RowID = GamesDB.CreateCommand();
             SQL_Get_RowID.CommandText = "SELECT ID FROM Systems WHERE System==@SystemName";
-            SQL_Get_RowID.Parameters.Add(Param_SystemName);
+            SQL_Get_RowID.Parameters.Add(new SQLiteParameter("@SystemName", SystemName));
             SQLiteDataReader RowIDFetch = SQL_Get_RowID.ExecuteReader();
 
             int RowID = Convert.ToInt32(null);
@@ -191,7 +182,7 @@ namespace GDBAccess
             }
             else
             {
-                return 0;
+                return AddSystem(SystemName);
             }
         }
 
