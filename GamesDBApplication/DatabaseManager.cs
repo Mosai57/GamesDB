@@ -84,8 +84,6 @@ namespace GDBAccess
 
         public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
         {
-            List<string> Search_Results = new List<string>();
-
             SQLiteCommand SQL_Get_Rows = GamesDB.CreateCommand();
             SQL_Get_Rows.CommandText = 
                 @"SELECT Game, Platform, Format
@@ -108,13 +106,9 @@ namespace GDBAccess
             SQLiteDataReader Reader = SQL_Get_Rows.ExecuteReader();
 
             DatabaseOutputFormatter Formatter = new DatabaseOutputFormatter();
+            List<string> FormattedQuery = Formatter.SortByGame(Reader);
 
-            while (Reader.Read())
-            {
-                Search_Results.Add(Reader.GetString(0) + " / " + Reader.GetString(1) + " / " + Reader.GetString(2));
-            }
-
-            return Search_Results;
+            return FormattedQuery;
         }
 
         public bool DeleteRecord(string GameName, string SystemName, string FormatType)
