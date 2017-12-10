@@ -11,8 +11,6 @@ namespace GDBAccess
         DatabaseManager DB_Manager;
         List<string> listBoxContents;
         string DatabaseSource;
-        string ViewType = "Game";
-        string OrderType = "ASC";
 
         public MainForm(string FilePath)
         {
@@ -28,7 +26,7 @@ namespace GDBAccess
 
         private void LoadDatabaseContents(string Game = "%", string System = "%", string Format = "%")
         {
-            List<string> Results = DB_Manager.SearchDB(Game, System, Format, ViewType, OrderType);
+            List<string> Results = DB_Manager.SearchDB(Game, System, Format);
             listBoxContents = Results;
             lb_Results.DataSource = Results;
             lbl_NoEntries.Text = listBoxContents.Count.ToString();

@@ -90,7 +90,7 @@ namespace GDBAccess
             SQL_Add_Entry.ExecuteNonQuery();
         }
 
-        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm, string ViewType, string OrderType)
+        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
         {
             List<string> Search_Results = new List<string>();
 
@@ -108,12 +108,10 @@ namespace GDBAccess
                     INNER JOIN Systems ON GameSystem.SystemID = Systems.ID 
                     INNER JOIN Format ON GameSystem.FormatID = Format.ID 
                   ) WHERE Game LIKE @GameTerm AND Platform LIKE @SystemTerm AND Format LIKE @FormatTerm 
-                  ORDER BY @Type @Order";
+                  ORDER BY Game ASC";
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@GameTerm", Game_SearchTerm));
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@SystemTerm", System_SearchTerm));
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@FormatTerm", Format_SearchTerm));
-            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@Type", ViewType));
-            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@Order", OrderType));
 
             SQLiteDataReader Reader = SQL_Get_Rows.ExecuteReader();
 
