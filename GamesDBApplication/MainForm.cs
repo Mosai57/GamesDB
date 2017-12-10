@@ -4,7 +4,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Windows.Forms;
 
-namespace GamesDBApplication
+namespace GDBAccess
 {
     public partial class MainForm : Form
     {
@@ -149,7 +149,7 @@ namespace GamesDBApplication
 
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
-                Export exportModule = new GamesDBApplication.Export();
+                Export exportModule = new GDBAccess.Export();
                 exportModule.ExportCSV(listBoxContents, saveFile.FileName);
                 MessageBox.Show("Export completed!");
             }

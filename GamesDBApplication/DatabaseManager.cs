@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Data.SQLite;
 
-namespace GamesDBApplication
+namespace GDBAccess
 {
     class DatabaseManager : IDisposable
     {
@@ -116,6 +116,8 @@ namespace GamesDBApplication
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@Order", OrderType));
 
             SQLiteDataReader Reader = SQL_Get_Rows.ExecuteReader();
+
+            DatabaseOutputFormatter Formatter = new DatabaseOutputFormatter();
 
             while (Reader.Read())
             {

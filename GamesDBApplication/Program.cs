@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
-namespace GamesDBApplication
+namespace GDBAccess
 {
     static class Program
     {

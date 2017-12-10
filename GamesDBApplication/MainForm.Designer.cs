@@ -1,4 +1,4 @@
-﻿namespace GamesDBApplication
+﻿namespace GDBAccess
 {
     partial class MainForm
     {

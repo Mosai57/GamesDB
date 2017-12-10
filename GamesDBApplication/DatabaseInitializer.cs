@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Data.SQLite;
 
-namespace GamesDBApplication
+namespace GDBAccess
 {
     class DatabaseInitializer : IDisposable
     {
