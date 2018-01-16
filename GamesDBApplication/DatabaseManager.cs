@@ -82,7 +82,7 @@ namespace GDBAccess
             SQL_Add_Entry.ExecuteNonQuery();
         }
 
-        public List<string> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
+        public List<List<string>> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
         {
             SQLiteCommand SQL_Get_Rows = GamesDB.CreateCommand();
             SQL_Get_Rows.CommandText = 
@@ -106,7 +106,7 @@ namespace GDBAccess
             SQLiteDataReader Reader = SQL_Get_Rows.ExecuteReader();
 
             DatabaseOutputFormatter Formatter = new DatabaseOutputFormatter();
-            List<string> FormattedQuery = Formatter.SortByGame(Reader);
+            List<List<string>> FormattedQuery = Formatter.SortByGame(Reader);
 
             return FormattedQuery;
         }

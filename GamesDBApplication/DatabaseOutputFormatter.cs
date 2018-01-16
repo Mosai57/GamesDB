@@ -20,12 +20,12 @@ namespace GDBAccess
         //      RawQuery[1] == SystemName
         //      RawQuery[2] == FormatType
 
-        public List<string> SortByGame(SQLiteDataReader RawQuery)
+        public List<List<string>> SortByGame(SQLiteDataReader RawQuery)
         {
             List<string> FormattedQuery = new List<string>();
             while (RawQuery.Read())
             {
-                FormattedQuery.Add(RawQuery.GetString(0) + " / " + RawQuery.GetString(1) + " / " + RawQuery.GetString(2));
+                FormattedQuery.Add(RawQuery.GetString(0) + "|" + RawQuery.GetString(1) + "|" + RawQuery.GetString(2));
             }
 
             // Properly handle cases where the game name starts with "A " or "The "
@@ -34,7 +34,25 @@ namespace GDBAccess
                 s.Substring(s.IndexOf(" ") + 1) :
                 s);
 
-            return FormattedQuery;
+            List<List<string>> QueryResults = ReturnQuery(FormattedQuery);
+
+            return QueryResults;
+        }
+
+        private List<List<string>> ReturnQuery(List<string> QueryResults)
+        {
+            List<List<string>> QueryReturn = new List<List<string>>();
+            foreach(String entry in QueryResults)
+            {
+                List<string> record = new List<string>();
+                string[] line = entry.Split('|');
+                foreach(var piece in line)
+                {
+                    record.Add(piece);
+                }
+                QueryReturn.Add(record);
+            }
+            return QueryReturn;
         }
 
     }

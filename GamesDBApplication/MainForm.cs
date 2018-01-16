@@ -9,7 +9,6 @@ namespace GDBAccess
     public partial class MainForm : Form
     {
         DatabaseManager DB_Manager;
-        List<string> listBoxContents;
         string DatabaseSource;
 
         public MainForm(string FilePath)
@@ -26,15 +25,15 @@ namespace GDBAccess
 
         private void LoadDatabaseContents(string Game = "%", string System = "%", string Format = "%")
         {
-            List<string> Results = DB_Manager.SearchDB(Game, System, Format);
-            listBoxContents = Results;
+            List<List<string>> Results = DB_Manager.SearchDB(Game, System, Format);
+            dgv_Results.Rows.Clear();
 
-            foreach(var item in Results){
-                string.spl
+            foreach(var line in Results)
+            {
+                dgv_Results.Rows.Add(line[0], line[1], line[2]);
             }
 
-            lb_Results.DataSource = Results;
-            lbl_NoEntries.Text = listBoxContents.Count.ToString();
+            lbl_NoEntries.Text = dgv_Results.RowCount.ToString();
         }
 
         private void button_Add_Click(object sender, EventArgs e)
@@ -88,7 +87,7 @@ namespace GDBAccess
 
         private void btn_Load_Click(object sender, EventArgs e)
         {
-            string Highlighted_Data = Convert.ToString(lb_Results.SelectedItem);
+            string Highlighted_Data = Convert.ToString(dgv_Results.SelectedRows);
             string[] RowInfo = SplitRowInfo(Highlighted_Data);
             tb_GameName.Text = RowInfo[0].Trim();
             cb_System.Text = RowInfo[1].Trim();
@@ -97,9 +96,9 @@ namespace GDBAccess
 
         private void button_Delete_Click(object sender, EventArgs e)
         {
-            if (lb_Results.SelectedItem != null)
+            if (dgv_Results.SelectedRows != null)
             {
-                string[] RowInfo = SplitRowInfo(Convert.ToString(lb_Results.SelectedItem));
+                string[] RowInfo = SplitRowInfo(Convert.ToString(dgv_Results.SelectedRows));
 
                 DialogResult PerformDelete = MessageBox.Show("Are you sure you want to delete the following record: "
                     + RowInfo[0] + " / " + RowInfo[1] + " / " + RowInfo[2],
@@ -136,7 +135,7 @@ namespace GDBAccess
             tb_GameName.Clear();
             cb_Format.Text = "";
             cb_System.Text = "";
-            lb_Results.DataSource = null;
+            dgv_Results.DataSource = null;
         }
 
         private void button_Export_Click(object sender, EventArgs e)
@@ -149,9 +148,9 @@ namespace GDBAccess
 
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
-                Export exportModule = new GDBAccess.Export();
-                exportModule.ExportCSV(listBoxContents, saveFile.FileName);
-                MessageBox.Show("Export completed!");
+                //Export exportModule = new GDBAccess.Export();
+                //exportModule.ExportCSV(listBoxContents, saveFile.FileName);
+                //MessageBox.Show("Export completed!");
             }
         }
 
@@ -197,7 +196,7 @@ namespace GDBAccess
         {
             string outputString = "";
             List<string> selections = new List<string>();
-            foreach(object o in lb_Results.SelectedItems)
+            foreach(object o in dgv_Results.SelectedRows)
             {
                 selections.Add(o.ToString());
             }
@@ -207,10 +206,7 @@ namespace GDBAccess
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for(int i = 0; i < lb_Results.Items.Count; i++)
-            {
-                lb_Results.SetSelected(i, true);
-            }
+            dgv_Results.SelectAll();
         }
 
         private void updateDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
