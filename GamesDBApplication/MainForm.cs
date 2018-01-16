@@ -28,6 +28,11 @@ namespace GDBAccess
         {
             List<string> Results = DB_Manager.SearchDB(Game, System, Format);
             listBoxContents = Results;
+
+            foreach(var item in Results){
+                string.spl
+            }
+
             lb_Results.DataSource = Results;
             lbl_NoEntries.Text = listBoxContents.Count.ToString();
         }

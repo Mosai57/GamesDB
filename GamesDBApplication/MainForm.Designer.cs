@@ -50,7 +50,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.lbl_NoEntries = new System.Windows.Forms.Label();
             this.tb_GameName = new System.Windows.Forms.TextBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FormatType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -104,7 +109,7 @@
             "Xbox One"});
             this.cb_System.Location = new System.Drawing.Point(87, 72);
             this.cb_System.Name = "cb_System";
-            this.cb_System.Size = new System.Drawing.Size(160, 21);
+            this.cb_System.Size = new System.Drawing.Size(556, 21);
             this.cb_System.TabIndex = 3;
             // 
             // label3
@@ -128,14 +133,14 @@
             "Digital"});
             this.cb_Format.Location = new System.Drawing.Point(87, 101);
             this.cb_Format.Name = "cb_Format";
-            this.cb_Format.Size = new System.Drawing.Size(160, 21);
+            this.cb_Format.Size = new System.Drawing.Size(556, 21);
             this.cb_Format.TabIndex = 5;
             // 
             // button_Add
             // 
             this.button_Add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_Add.AutoSize = true;
-            this.button_Add.Location = new System.Drawing.Point(323, 41);
+            this.button_Add.Location = new System.Drawing.Point(719, 41);
             this.button_Add.Name = "button_Add";
             this.button_Add.Size = new System.Drawing.Size(105, 23);
             this.button_Add.TabIndex = 2;
@@ -147,7 +152,7 @@
             // 
             this.button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_Search.AutoSize = true;
-            this.button_Search.Location = new System.Drawing.Point(323, 70);
+            this.button_Search.Location = new System.Drawing.Point(719, 70);
             this.button_Search.Name = "button_Search";
             this.button_Search.Size = new System.Drawing.Size(105, 23);
             this.button_Search.TabIndex = 4;
@@ -164,14 +169,14 @@
             this.lb_Results.Location = new System.Drawing.Point(12, 186);
             this.lb_Results.Name = "lb_Results";
             this.lb_Results.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lb_Results.Size = new System.Drawing.Size(416, 238);
+            this.lb_Results.Size = new System.Drawing.Size(386, 238);
             this.lb_Results.TabIndex = 10;
             // 
             // button_Delete
             // 
             this.button_Delete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_Delete.AutoSize = true;
-            this.button_Delete.Location = new System.Drawing.Point(323, 128);
+            this.button_Delete.Location = new System.Drawing.Point(719, 128);
             this.button_Delete.Name = "button_Delete";
             this.button_Delete.Size = new System.Drawing.Size(105, 23);
             this.button_Delete.TabIndex = 7;
@@ -182,7 +187,7 @@
             // button_Export
             // 
             this.button_Export.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_Export.Location = new System.Drawing.Point(323, 157);
+            this.button_Export.Location = new System.Drawing.Point(719, 157);
             this.button_Export.Name = "button_Export";
             this.button_Export.Size = new System.Drawing.Size(105, 23);
             this.button_Export.TabIndex = 8;
@@ -193,7 +198,7 @@
             // btn_Load
             // 
             this.btn_Load.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Load.Location = new System.Drawing.Point(323, 99);
+            this.btn_Load.Location = new System.Drawing.Point(719, 99);
             this.btn_Load.Name = "btn_Load";
             this.btn_Load.Size = new System.Drawing.Size(105, 23);
             this.btn_Load.TabIndex = 6;
@@ -209,7 +214,7 @@
             this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(440, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(836, 24);
             this.menuStrip1.TabIndex = 11;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -294,14 +299,48 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_GameName.Location = new System.Drawing.Point(87, 43);
             this.tb_GameName.Name = "tb_GameName";
-            this.tb_GameName.Size = new System.Drawing.Size(230, 20);
+            this.tb_GameName.Size = new System.Drawing.Size(626, 20);
             this.tb_GameName.TabIndex = 14;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.GameName,
+            this.SystemName,
+            this.FormatType});
+            this.dataGridView1.Location = new System.Drawing.Point(405, 186);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(419, 238);
+            this.dataGridView1.TabIndex = 15;
+            // 
+            // GameName
+            // 
+            this.GameName.HeaderText = "Game";
+            this.GameName.Name = "GameName";
+            this.GameName.ReadOnly = true;
+            // 
+            // SystemName
+            // 
+            this.SystemName.HeaderText = "System";
+            this.SystemName.Name = "SystemName";
+            this.SystemName.ReadOnly = true;
+            // 
+            // FormatType
+            // 
+            this.FormatType.HeaderText = "Format";
+            this.FormatType.Name = "FormatType";
+            this.FormatType.ReadOnly = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 436);
+            this.ClientSize = new System.Drawing.Size(836, 436);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.tb_GameName);
             this.Controls.Add(this.lbl_NoEntries);
             this.Controls.Add(this.label4);
@@ -325,6 +364,7 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -354,6 +394,10 @@
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateDatabaseToolStripMenuItem;
         private System.Windows.Forms.TextBox tb_GameName;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FormatType;
     }
 }
 
