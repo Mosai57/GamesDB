@@ -34,7 +34,7 @@ namespace GDBAccess
                 s.Substring(s.IndexOf(" ") + 1) :
                 s);
 
-            List<List<string>> QueryResults = ReturnQuery(FormattedQuery);
+            List<List<string>> QueryResults = ReturnQuery(OrderedSearchResults.ToList<string>());
 
             return QueryResults;
         }
