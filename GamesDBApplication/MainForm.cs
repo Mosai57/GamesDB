@@ -25,15 +25,10 @@ namespace GDBAccess
 
         private void LoadDatabaseContents(string Game = "%", string System = "%", string Format = "%")
         {
-            List<List<string>> Results = DB_Manager.SearchDB(Game, System, Format);
-            dgv_Results.Rows.Clear();
+            List<GameEntry> results = DB_Manager.SearchDB(Game, System, Format);
+            dgv_Results.DataSource = results;
 
-            foreach(var line in Results)
-            {
-                dgv_Results.Rows.Add(line[0], line[1], line[2]);
-            }
-
-            lbl_NoEntries.Text = dgv_Results.RowCount.ToString();
+            lbl_NoEntries.Text = results.Count.ToString();
         }
 
         private void button_Add_Click(object sender, EventArgs e)
@@ -87,28 +82,33 @@ namespace GDBAccess
 
         private void btn_Load_Click(object sender, EventArgs e)
         {
-            string Highlighted_Data = Convert.ToString(dgv_Results.SelectedRows);
-            string[] RowInfo = SplitRowInfo(Highlighted_Data);
-            tb_GameName.Text = RowInfo[0].Trim();
-            cb_System.Text = RowInfo[1].Trim();
-            cb_Format.Text = RowInfo[2].Trim();
+            var selrow = dgv_Results.SelectedRows;
+            if (selrow.Count == 0) return;
+            var record = (GameEntry)selrow[0].DataBoundItem;
+            tb_GameName.Text = record.Name;
+            cb_System.Text = record.SystemName;
+            cb_Format.Text = record.FormatName;
         }
 
         private void button_Delete_Click(object sender, EventArgs e)
         {
-            if (dgv_Results.SelectedRows != null)
+            if (dgv_Results.SelectedRows.Count > 0)
             {
-                string[] RowInfo = SplitRowInfo(Convert.ToString(dgv_Results.SelectedRows));
+                var record = (GameEntry) dgv_Results.SelectedRows[0].DataBoundItem;
 
-                DialogResult PerformDelete = MessageBox.Show("Are you sure you want to delete the following record: "
-                    + RowInfo[0] + " / " + RowInfo[1] + " / " + RowInfo[2],
+                DialogResult PerformDelete = MessageBox.Show($@"Are you sure you want to delete the following record?
+
+    Name = {record.Name}
+    System = {record.SystemName}
+    Format = {record.FormatName}
+",
                     "Confirm Delete", MessageBoxButtons.YesNo);
 
                 if (PerformDelete == DialogResult.Yes)
                 {
-                    string GameName = RowInfo[0].Trim();
-                    string SystemName = RowInfo[1].Trim();
-                    string FormatType = RowInfo[2].Trim();
+                    string GameName = record.Name;
+                    string SystemName = record.SystemName;
+                    string FormatType = record.FormatName;
                     bool Deleted = false;
 
                     Deleted = DB_Manager.DeleteRecord(GameName, SystemName, FormatType);

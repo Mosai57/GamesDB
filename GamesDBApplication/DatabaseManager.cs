@@ -38,7 +38,7 @@ namespace GDBAccess
 
             // Secondary check to ensure no garbage data is added.
             // Above functions do attempt to ensure no 0s are returned.
-            if(GameID != 0 && SystemID != 0 && FormatID != 0)
+            if (GameID != 0 && SystemID != 0 && FormatID != 0)
             {
                 AddGameSystem(GameID, SystemID, FormatID, DateAdded);
             }
@@ -82,10 +82,10 @@ namespace GDBAccess
             SQL_Add_Entry.ExecuteNonQuery();
         }
 
-        public List<List<string>> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
+        public List<GameEntry> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
         {
             SQLiteCommand SQL_Get_Rows = GamesDB.CreateCommand();
-            SQL_Get_Rows.CommandText = 
+            SQL_Get_Rows.CommandText =
                 @"SELECT Game, Platform, Format
                   FROM( 
                     SELECT 
@@ -106,7 +106,7 @@ namespace GDBAccess
             SQLiteDataReader Reader = SQL_Get_Rows.ExecuteReader();
 
             DatabaseOutputFormatter Formatter = new DatabaseOutputFormatter();
-            List<List<string>> FormattedQuery = Formatter.SortByGame(Reader);
+            List<GameEntry> FormattedQuery = Formatter.SortByGame(Reader);
 
             return FormattedQuery;
         }
@@ -146,10 +146,11 @@ namespace GDBAccess
             if (RowID != Convert.ToInt32(null))
             {
                 return RowID;
-            }else
+            }
+            else
             {
                 return AddGame(GameName);
-            }  
+            }
         }
 
         // Fetches the RowID for the System Name

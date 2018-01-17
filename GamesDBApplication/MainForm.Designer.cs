@@ -42,14 +42,14 @@
             this.lbl_NoEntries = new System.Windows.Forms.Label();
             this.tb_GameName = new System.Windows.Forms.TextBox();
             this.dgv_Results = new System.Windows.Forms.DataGridView();
-            this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FormatType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button_Export = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.GameName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SystemName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FormatType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Results)).BeginInit();
             this.SuspendLayout();
@@ -85,9 +85,10 @@
             "Xbox",
             "Xbox 360",
             "Xbox One"});
-            this.cb_System.Location = new System.Drawing.Point(87, 72);
+            this.cb_System.Location = new System.Drawing.Point(116, 89);
+            this.cb_System.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cb_System.Name = "cb_System";
-            this.cb_System.Size = new System.Drawing.Size(316, 21);
+            this.cb_System.Size = new System.Drawing.Size(420, 24);
             this.cb_System.TabIndex = 3;
             // 
             // cb_Format
@@ -100,18 +101,20 @@
             "",
             "Physical",
             "Digital"});
-            this.cb_Format.Location = new System.Drawing.Point(87, 101);
+            this.cb_Format.Location = new System.Drawing.Point(116, 124);
+            this.cb_Format.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cb_Format.Name = "cb_Format";
-            this.cb_Format.Size = new System.Drawing.Size(316, 21);
+            this.cb_Format.Size = new System.Drawing.Size(420, 24);
             this.cb_Format.TabIndex = 5;
             // 
             // button_Add
             // 
             this.button_Add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_Add.AutoSize = true;
-            this.button_Add.Location = new System.Drawing.Point(479, 41);
+            this.button_Add.Location = new System.Drawing.Point(639, 50);
+            this.button_Add.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button_Add.Name = "button_Add";
-            this.button_Add.Size = new System.Drawing.Size(105, 23);
+            this.button_Add.Size = new System.Drawing.Size(140, 28);
             this.button_Add.TabIndex = 2;
             this.button_Add.Text = "Add";
             this.button_Add.UseVisualStyleBackColor = true;
@@ -121,9 +124,10 @@
             // 
             this.button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_Search.AutoSize = true;
-            this.button_Search.Location = new System.Drawing.Point(479, 70);
+            this.button_Search.Location = new System.Drawing.Point(639, 86);
+            this.button_Search.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button_Search.Name = "button_Search";
-            this.button_Search.Size = new System.Drawing.Size(105, 23);
+            this.button_Search.Size = new System.Drawing.Size(140, 28);
             this.button_Search.TabIndex = 4;
             this.button_Search.Text = "Search";
             this.button_Search.UseVisualStyleBackColor = true;
@@ -133,9 +137,10 @@
             // 
             this.button_Delete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_Delete.AutoSize = true;
-            this.button_Delete.Location = new System.Drawing.Point(479, 128);
+            this.button_Delete.Location = new System.Drawing.Point(639, 158);
+            this.button_Delete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button_Delete.Name = "button_Delete";
-            this.button_Delete.Size = new System.Drawing.Size(105, 23);
+            this.button_Delete.Size = new System.Drawing.Size(140, 28);
             this.button_Delete.TabIndex = 7;
             this.button_Delete.Text = "Delete";
             this.button_Delete.UseVisualStyleBackColor = true;
@@ -144,9 +149,10 @@
             // btn_Load
             // 
             this.btn_Load.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Load.Location = new System.Drawing.Point(479, 99);
+            this.btn_Load.Location = new System.Drawing.Point(639, 122);
+            this.btn_Load.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_Load.Name = "btn_Load";
-            this.btn_Load.Size = new System.Drawing.Size(105, 23);
+            this.btn_Load.Size = new System.Drawing.Size(140, 28);
             this.btn_Load.TabIndex = 6;
             this.btn_Load.Text = "Load";
             this.btn_Load.UseVisualStyleBackColor = true;
@@ -155,11 +161,13 @@
             // menuStrip1
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(596, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(795, 28);
             this.menuStrip1.TabIndex = 11;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -170,27 +178,27 @@
             this.backupDatabaseToolStripMenuItem,
             this.updateDatabaseToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // initializeDatabaseToolStripMenuItem
             // 
             this.initializeDatabaseToolStripMenuItem.Name = "initializeDatabaseToolStripMenuItem";
-            this.initializeDatabaseToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.initializeDatabaseToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
             this.initializeDatabaseToolStripMenuItem.Text = "Initialize Database";
             this.initializeDatabaseToolStripMenuItem.Click += new System.EventHandler(this.initializeDatabaseToolStripMenuItem_Click);
             // 
             // backupDatabaseToolStripMenuItem
             // 
             this.backupDatabaseToolStripMenuItem.Name = "backupDatabaseToolStripMenuItem";
-            this.backupDatabaseToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.backupDatabaseToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
             this.backupDatabaseToolStripMenuItem.Text = "Backup Database";
             this.backupDatabaseToolStripMenuItem.Click += new System.EventHandler(this.backupDatabaseToolStripMenuItem_Click_1);
             // 
             // updateDatabaseToolStripMenuItem
             // 
             this.updateDatabaseToolStripMenuItem.Name = "updateDatabaseToolStripMenuItem";
-            this.updateDatabaseToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.updateDatabaseToolStripMenuItem.Size = new System.Drawing.Size(207, 26);
             this.updateDatabaseToolStripMenuItem.Text = "Update Database";
             this.updateDatabaseToolStripMenuItem.Click += new System.EventHandler(this.updateDatabaseToolStripMenuItem_Click);
             // 
@@ -199,18 +207,20 @@
             this.lbl_NoEntries.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_NoEntries.AutoSize = true;
-            this.lbl_NoEntries.Location = new System.Drawing.Point(147, 170);
+            this.lbl_NoEntries.Location = new System.Drawing.Point(196, 209);
+            this.lbl_NoEntries.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_NoEntries.Name = "lbl_NoEntries";
-            this.lbl_NoEntries.Size = new System.Drawing.Size(0, 13);
+            this.lbl_NoEntries.Size = new System.Drawing.Size(0, 17);
             this.lbl_NoEntries.TabIndex = 13;
             // 
             // tb_GameName
             // 
             this.tb_GameName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_GameName.Location = new System.Drawing.Point(87, 43);
+            this.tb_GameName.Location = new System.Drawing.Point(116, 53);
+            this.tb_GameName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tb_GameName.Name = "tb_GameName";
-            this.tb_GameName.Size = new System.Drawing.Size(386, 20);
+            this.tb_GameName.Size = new System.Drawing.Size(513, 22);
             this.tb_GameName.TabIndex = 11;
             // 
             // dgv_Results
@@ -226,39 +236,22 @@
             this.GameName,
             this.SystemName,
             this.FormatType});
-            this.dgv_Results.Location = new System.Drawing.Point(12, 186);
+            this.dgv_Results.Location = new System.Drawing.Point(16, 229);
+            this.dgv_Results.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgv_Results.Name = "dgv_Results";
             this.dgv_Results.ReadOnly = true;
             this.dgv_Results.RowHeadersVisible = false;
             this.dgv_Results.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_Results.Size = new System.Drawing.Size(572, 238);
+            this.dgv_Results.Size = new System.Drawing.Size(763, 293);
             this.dgv_Results.TabIndex = 9;
-            // 
-            // GameName
-            // 
-            this.GameName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.GameName.HeaderText = "Game";
-            this.GameName.Name = "GameName";
-            this.GameName.ReadOnly = true;
-            // 
-            // SystemName
-            // 
-            this.SystemName.HeaderText = "System";
-            this.SystemName.Name = "SystemName";
-            this.SystemName.ReadOnly = true;
-            // 
-            // FormatType
-            // 
-            this.FormatType.HeaderText = "Format";
-            this.FormatType.Name = "FormatType";
-            this.FormatType.ReadOnly = true;
             // 
             // button_Export
             // 
             this.button_Export.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_Export.Location = new System.Drawing.Point(479, 157);
+            this.button_Export.Location = new System.Drawing.Point(639, 193);
+            this.button_Export.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button_Export.Name = "button_Export";
-            this.button_Export.Size = new System.Drawing.Size(105, 23);
+            this.button_Export.Size = new System.Drawing.Size(140, 28);
             this.button_Export.TabIndex = 8;
             this.button_Export.Text = "Export";
             this.button_Export.UseVisualStyleBackColor = true;
@@ -267,27 +260,30 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(41, 104);
+            this.label3.Location = new System.Drawing.Point(55, 128);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(42, 13);
+            this.label3.Size = new System.Drawing.Size(56, 17);
             this.label3.TabIndex = 4;
             this.label3.Text = "Format:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 75);
+            this.label2.Location = new System.Drawing.Point(52, 92);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.Size = new System.Drawing.Size(58, 17);
             this.label2.TabIndex = 2;
             this.label2.Text = "System:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 46);
+            this.label1.Location = new System.Drawing.Point(19, 57);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 13);
+            this.label1.Size = new System.Drawing.Size(91, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Game Name:";
             // 
@@ -296,17 +292,40 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 170);
+            this.label4.Location = new System.Drawing.Point(16, 209);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(129, 13);
+            this.label4.Size = new System.Drawing.Size(172, 17);
             this.label4.TabIndex = 12;
             this.label4.Text = "Search Results:    Entries:";
             // 
+            // GameName
+            // 
+            this.GameName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.GameName.DataPropertyName = "Name";
+            this.GameName.HeaderText = "Game";
+            this.GameName.Name = "GameName";
+            this.GameName.ReadOnly = true;
+            // 
+            // SystemName
+            // 
+            this.SystemName.DataPropertyName = "SystemName";
+            this.SystemName.HeaderText = "System";
+            this.SystemName.Name = "SystemName";
+            this.SystemName.ReadOnly = true;
+            // 
+            // FormatType
+            // 
+            this.FormatType.DataPropertyName = "FormatName";
+            this.FormatType.HeaderText = "Format";
+            this.FormatType.Name = "FormatType";
+            this.FormatType.ReadOnly = true;
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(596, 436);
+            this.ClientSize = new System.Drawing.Size(795, 537);
             this.Controls.Add(this.dgv_Results);
             this.Controls.Add(this.tb_GameName);
             this.Controls.Add(this.lbl_NoEntries);
@@ -323,8 +342,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(456, 465);
+            this.MinimumSize = new System.Drawing.Size(602, 561);
             this.Name = "MainForm";
             this.Text = "GDB Access";
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -351,14 +371,14 @@
         private System.Windows.Forms.ToolStripMenuItem updateDatabaseToolStripMenuItem;
         private System.Windows.Forms.TextBox tb_GameName;
         private System.Windows.Forms.DataGridView dgv_Results;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FormatType;
         private System.Windows.Forms.Button button_Export;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FormatType;
     }
 }
 
