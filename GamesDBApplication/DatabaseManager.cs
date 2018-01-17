@@ -13,8 +13,80 @@ namespace GDBAccess
             string DatabaseSource = FilePath;
             GamesDB = new SQLiteConnection("Data Source=" + DatabaseSource + ";Version=3");
             GamesDB.Open();
+            GamesDB.BindFunction(
+                new SQLiteFunctionAttribute() { FuncType = FunctionType.Collation, Name = "library", },
+                new LibraryCollation()
+                );
         }
 
+        class LibraryCollation : SQLiteFunction
+        {
+            public LibraryCollation() { }
+
+            /// <summary>
+            /// Finds the first whitespace character starting at <paramref name="index"/>, returning -1 if the remainder of the string
+            /// does not contain whitespace characters.
+            /// </summary>
+            /// <param name="s"></param>
+            /// <param name="index"></param>
+            /// <returns></returns>
+            static int FindWhitespace(string s, int index)
+            {
+                if (index < 0) return index;
+                for (; index < s.Length; index++)
+                    if (char.IsWhiteSpace(s, index)) return index;
+                return -1;
+            }
+
+            /// <summary>
+            /// Finds the first non-whitespace character starting at <paramref name="index"/>, returning -1 if the remainder of the string
+            /// is composed of whitespace characters.
+            /// </summary>
+            /// <param name="s"></param>
+            /// <param name="index"></param>
+            /// <returns></returns>
+            static int FindNonWhitespace(string s, int index)
+            {
+                if (index < 0) return index;
+                for (; index < s.Length; index++)
+                    if (!char.IsWhiteSpace(s, index)) return index;
+                return -1;
+            }
+
+            /// <summary>
+            /// Finds the first non-space character that occurs after the first space character.
+            /// </summary>
+            /// <param name="s"></param>
+            /// <returns></returns>
+            static int FindSecondWord(string s)
+            {
+                int word1_start = FindNonWhitespace(s, 0);
+                int word1_stop = FindWhitespace(s, word1_start);
+                int word2_start = FindNonWhitespace(s, word1_stop);
+                return word2_start;
+            }
+
+            static string NormalizeName(string s)
+            {
+                if (s.StartsWith("A ", StringComparison.CurrentCultureIgnoreCase) ||
+                    s.StartsWith("The ", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    int word2_start = FindSecondWord(s);
+                    if (word2_start < 0) return s;
+
+                    return s.Substring(word2_start);
+                }
+                return s;
+            }
+
+            public override int Compare(string param1, string param2)
+            {
+                return StringComparer.CurrentCultureIgnoreCase.Compare(
+                    NormalizeName(param1),
+                    NormalizeName(param2)
+                    );
+            }
+        }
 
         public void Dispose()
         {
@@ -98,17 +170,23 @@ namespace GDBAccess
                     INNER JOIN Systems ON GameSystem.SystemID = Systems.ID 
                     INNER JOIN Format ON GameSystem.FormatID = Format.ID 
                   ) WHERE Game LIKE @GameTerm AND Platform LIKE @SystemTerm AND Format LIKE @FormatTerm 
-                  ORDER BY Game ASC";
+                  ORDER BY Game COLLATE library ASC";
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@GameTerm", Game_SearchTerm));
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@SystemTerm", System_SearchTerm));
             SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@FormatTerm", Format_SearchTerm));
 
             SQLiteDataReader Reader = SQL_Get_Rows.ExecuteReader();
 
-            DatabaseOutputFormatter Formatter = new DatabaseOutputFormatter();
-            List<GameEntry> FormattedQuery = Formatter.SortByGame(Reader);
+            var list = new List<GameEntry>();
+            while (Reader.Read())
+                list.Add(new GameEntry()
+                {
+                    Name = Reader.GetString(0),
+                    SystemName = Reader.GetString(1),
+                    FormatName = Reader.GetString(2),
+                });
 
-            return FormattedQuery;
+            return list;
         }
 
         public bool DeleteRecord(string GameName, string SystemName, string FormatType)
