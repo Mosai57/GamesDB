@@ -154,6 +154,7 @@ namespace GDBAccess
             SQL_Add_Entry.ExecuteNonQuery();
         }
 
+         
         public List<GameEntry> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
         {
             SQLiteCommand SQL_Get_Rows = GamesDB.CreateCommand();

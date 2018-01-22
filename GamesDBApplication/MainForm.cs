@@ -9,6 +9,7 @@ namespace GDBAccess
     public partial class MainForm : Form
     {
         DatabaseManager DB_Manager;
+        List<GameEntry> DBResults;
         string DatabaseSource;
 
         public MainForm(string FilePath)
@@ -26,9 +27,8 @@ namespace GDBAccess
         private void LoadDatabaseContents(string Game = "%", string System = "%", string Format = "%")
         {
             List<GameEntry> results = DB_Manager.SearchDB(Game, System, Format);
-            dgv_Results.DataSource = results;
-
-            lbl_NoEntries.Text = results.Count.ToString();
+            DBResults = results;
+            dgv_Results.DataSource = DBResults;
         }
 
         private void button_Add_Click(object sender, EventArgs e)
@@ -148,9 +148,9 @@ namespace GDBAccess
 
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
-                //Export exportModule = new GDBAccess.Export();
-                //exportModule.ExportCSV(listBoxContents, saveFile.FileName);
-                //MessageBox.Show("Export completed!");
+                Export exportModule = new GDBAccess.Export();
+                exportModule.ExportCSV(DBResults, saveFile.FileName);
+                MessageBox.Show("Export completed!");
             }
         }
 
