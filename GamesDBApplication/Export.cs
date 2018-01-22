@@ -9,20 +9,16 @@ namespace GDBAccess
 {
     class Export
     {
-        public void ExportCSV(List<string> exportList, string filePath)
+        public void ExportCSV(List<GameEntry> exportList, string filePath)
         {
-            Regex splitter = new Regex(@"\s/\s");
-
             System.IO.StreamWriter csvFile = new System.IO.StreamWriter(filePath);
             csvFile.WriteLine("Game Name,System Name,Format Type");
 
-            foreach (string line in exportList)
+            foreach (GameEntry entry in exportList)
             {
-                string[] lineInfo = splitter.Split(line).ToArray();
-
-                string recordLineOut = "\"" + lineInfo[0] + "\"" + ","
-                                     + "\"" + lineInfo[1] + "\"" + ","
-                                     + "\"" + lineInfo[2] + "\"";
+                string recordLineOut = "\"" + entry.Name + "\"" + ","
+                                     + "\"" + entry.SystemName + "\"" + ","
+                                     + "\"" + entry.FormatName + "\"";
 
                 csvFile.WriteLine(recordLineOut);
             }

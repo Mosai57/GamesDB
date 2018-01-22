@@ -9,7 +9,7 @@ namespace GDBAccess
     public partial class MainForm : Form
     {
         DatabaseManager DB_Manager;
-        List<string> listBoxContents;
+        List<GameEntry> DBResults;
         string DatabaseSource;
 
         public MainForm(string FilePath)
@@ -26,10 +26,9 @@ namespace GDBAccess
 
         private void LoadDatabaseContents(string Game = "%", string System = "%", string Format = "%")
         {
-            List<string> Results = DB_Manager.SearchDB(Game, System, Format);
-            listBoxContents = Results;
-            lb_Results.DataSource = Results;
-            lbl_NoEntries.Text = listBoxContents.Count.ToString();
+            List<GameEntry> results = DB_Manager.SearchDB(Game, System, Format);
+            DBResults = results;
+            dgv_Results.DataSource = DBResults;
         }
 
         private void button_Add_Click(object sender, EventArgs e)
@@ -83,28 +82,33 @@ namespace GDBAccess
 
         private void btn_Load_Click(object sender, EventArgs e)
         {
-            string Highlighted_Data = Convert.ToString(lb_Results.SelectedItem);
-            string[] RowInfo = SplitRowInfo(Highlighted_Data);
-            tb_GameName.Text = RowInfo[0].Trim();
-            cb_System.Text = RowInfo[1].Trim();
-            cb_Format.Text = RowInfo[2].Trim();
+            var selrow = dgv_Results.SelectedRows;
+            if (selrow.Count == 0) return;
+            var record = (GameEntry)selrow[0].DataBoundItem;
+            tb_GameName.Text = record.Name;
+            cb_System.Text = record.SystemName;
+            cb_Format.Text = record.FormatName;
         }
 
         private void button_Delete_Click(object sender, EventArgs e)
         {
-            if (lb_Results.SelectedItem != null)
+            if (dgv_Results.SelectedRows.Count > 0)
             {
-                string[] RowInfo = SplitRowInfo(Convert.ToString(lb_Results.SelectedItem));
+                var record = (GameEntry) dgv_Results.SelectedRows[0].DataBoundItem;
 
-                DialogResult PerformDelete = MessageBox.Show("Are you sure you want to delete the following record: "
-                    + RowInfo[0] + " / " + RowInfo[1] + " / " + RowInfo[2],
+                DialogResult PerformDelete = MessageBox.Show($@"Are you sure you want to delete the following record?
+
+    Name = {record.Name}
+    System = {record.SystemName}
+    Format = {record.FormatName}
+",
                     "Confirm Delete", MessageBoxButtons.YesNo);
 
                 if (PerformDelete == DialogResult.Yes)
                 {
-                    string GameName = RowInfo[0].Trim();
-                    string SystemName = RowInfo[1].Trim();
-                    string FormatType = RowInfo[2].Trim();
+                    string GameName = record.Name;
+                    string SystemName = record.SystemName;
+                    string FormatType = record.FormatName;
                     bool Deleted = false;
 
                     Deleted = DB_Manager.DeleteRecord(GameName, SystemName, FormatType);
@@ -131,7 +135,7 @@ namespace GDBAccess
             tb_GameName.Clear();
             cb_Format.Text = "";
             cb_System.Text = "";
-            lb_Results.DataSource = null;
+            dgv_Results.DataSource = null;
         }
 
         private void button_Export_Click(object sender, EventArgs e)
@@ -145,7 +149,7 @@ namespace GDBAccess
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 Export exportModule = new GDBAccess.Export();
-                exportModule.ExportCSV(listBoxContents, saveFile.FileName);
+                exportModule.ExportCSV(DBResults, saveFile.FileName);
                 MessageBox.Show("Export completed!");
             }
         }
@@ -192,7 +196,7 @@ namespace GDBAccess
         {
             string outputString = "";
             List<string> selections = new List<string>();
-            foreach(object o in lb_Results.SelectedItems)
+            foreach(object o in dgv_Results.SelectedRows)
             {
                 selections.Add(o.ToString());
             }
@@ -202,10 +206,7 @@ namespace GDBAccess
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for(int i = 0; i < lb_Results.Items.Count; i++)
-            {
-                lb_Results.SetSelected(i, true);
-            }
+            dgv_Results.SelectAll();
         }
 
         private void updateDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
