@@ -54,7 +54,7 @@ namespace GDBAccess
             }
             catch (SQLiteException SQL_e)
             {
-                MessageBox.Show(Convert.ToString(SQL_e));
+                MessageBox.Show("An error has occured while adding the entry.\nBe sure that the record does not exist in the database.");//Convert.ToString(SQL_e));
             }
         }
 
@@ -98,10 +98,10 @@ namespace GDBAccess
 
                 DialogResult PerformDelete = MessageBox.Show($@"Are you sure you want to delete the following record?
 
-    Name = {record.Name}
-    System = {record.SystemName}
-    Format = {record.FormatName}
-",
+                    Name = {record.Name}
+                    System = {record.SystemName}
+                    Format = {record.FormatName}
+                    ",
                     "Confirm Delete", MessageBoxButtons.YesNo);
 
                 if (PerformDelete == DialogResult.Yes)
