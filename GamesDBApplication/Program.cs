@@ -18,10 +18,13 @@ namespace GDBAccess
         {
             string filename = "GDBA.sdb";
             string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"InduljNet\Gdba");
+            
             // Initialize path
             System.IO.Directory.CreateDirectory(FilePath);
-            FilePath = Path.Combine(FilePath, filename);
-            if (!File.Exists(FilePath))
+            System.IO.Directory.CreateDirectory(Path.Combine(FilePath, @"log"));
+            string DBFilePath = Path.Combine(FilePath, filename);
+            
+            if (!File.Exists(DBFilePath))
             {
                 MessageBox.Show("Database not found. Initializing.", "Initialization");
 
@@ -32,9 +35,11 @@ namespace GDBAccess
                 MessageBox.Show("Database initialized.", "Initialization");
             }
 
+            
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm(FilePath));
+            Application.Run(new MainForm(FilePath, DBFilePath));
         }
     }
 }

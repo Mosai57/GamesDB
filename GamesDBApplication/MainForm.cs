@@ -10,12 +10,14 @@ namespace GDBAccess
     {
         DatabaseManager DB_Manager;
         List<GameEntry> DBResults;
+        Logger logger;
         string DatabaseSource;
 
-        public MainForm(string FilePath)
+        public MainForm(string FilePath, string DBFilePath)
         {
             InitializeComponent();
-            DatabaseSource = FilePath;
+            DatabaseSource = DBFilePath;
+            logger = new Logger(FilePath);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -27,6 +29,7 @@ namespace GDBAccess
         private void LoadDatabaseContents(string Game = "%", string System = "%", string Format = "%")
         {
             List<GameEntry> results = DB_Manager.SearchDB(Game, System, Format);
+            LogTransaction("Search");
             DBResults = results;
             dgv_Results.DataSource = DBResults;
         }
@@ -46,6 +49,7 @@ namespace GDBAccess
             try
             {
                 DB_Manager.AddToDB_Controller(GameName, SystemName, Format);
+                LogTransaction("Add");
 
                 tb_GameName.Clear();
                 tb_GameName.Focus();
@@ -54,6 +58,7 @@ namespace GDBAccess
             }
             catch (SQLiteException SQL_e)
             {
+                LogEvent(SQL_e);
                 MessageBox.Show("An error has occured while adding the entry.\nBe sure that the record does not exist in the database.");//Convert.ToString(SQL_e));
             }
         }
@@ -76,18 +81,9 @@ namespace GDBAccess
             }
             catch (SQLiteException SQL_e)
             {
+                LogEvent(SQL_e);
                 MessageBox.Show(Convert.ToString(SQL_e));
             }
-        }
-
-        private void btn_Load_Click(object sender, EventArgs e)
-        {
-            var selrow = dgv_Results.SelectedRows;
-            if (selrow.Count == 0) return;
-            var record = (GameEntry)selrow[0].DataBoundItem;
-            tb_GameName.Text = record.Name;
-            cb_System.Text = record.SystemName;
-            cb_Format.Text = record.FormatName;
         }
 
         private void button_Delete_Click(object sender, EventArgs e)
@@ -112,6 +108,7 @@ namespace GDBAccess
                     bool Deleted = false;
 
                     Deleted = DB_Manager.DeleteRecord(GameName, SystemName, FormatType);
+                    LogTransaction("Delete");
                     if (Deleted)
                     {
                         string systemText = cb_System.Text;
@@ -136,6 +133,25 @@ namespace GDBAccess
             cb_Format.Text = "";
             cb_System.Text = "";
             dgv_Results.DataSource = null;
+        }
+
+        private void LogTransaction(string TransactionType)
+        {
+            string gameName = tb_GameName.Text;
+            if(gameName == "") { gameName = "%"; }
+            string systemName = cb_System.Text;
+            if(systemName == "") { systemName = "%"; }
+            string formatName = cb_Format.Text;
+            if(formatName == "") { formatName = "%"; }
+
+            TransactionLogObject transObj = new TransactionLogObject(TransactionType, gameName, systemName, formatName);
+            logger.Log(transObj);
+        }
+
+        private void LogEvent(object eventObj)
+        {
+            EventLogObject eventLog = new EventLogObject(eventObj);
+            logger.Log(eventLog);
         }
 
         private void button_Export_Click(object sender, EventArgs e)
