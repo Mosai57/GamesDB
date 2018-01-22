@@ -1,5 +1,10 @@
-﻿namespace GDBAccess
+﻿using System;
+
+namespace GDBAccess
 {
+    /// <summary>
+    /// Logs a SQL transaction
+    /// </summary>
     class TransactionLogObject : LogObject
     {
         string Trans;

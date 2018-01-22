@@ -1,5 +1,10 @@
-﻿namespace GDBAccess
+﻿using System;
+
+namespace GDBAccess
 {
+    /// <summary>
+    /// Logs an event
+    /// </summary>
     class EventLogObject : LogObject
     {
         public EventLogObject(object obj)

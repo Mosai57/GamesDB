@@ -1,4 +1,6 @@
-﻿namespace GDBAccess
+﻿using System;
+
+namespace GDBAccess
 {
     public class GameEntry
     {
