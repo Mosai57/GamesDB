@@ -154,15 +154,6 @@ namespace GDBAccess
             }
         }
 
-        private string[] SplitRowInfo(string ToSplit)
-        {
-            var NewArray = new[] { "", "", "" };
-            var split = ToSplit.Split('/');
-            Array.Copy(split, NewArray, split.Length <= 3 ? split.Length : 3);
-
-            return NewArray;
-        }
-
         private void initializeDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"InduljNet\Gdba", "GDBA.sdb");
