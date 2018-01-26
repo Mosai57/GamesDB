@@ -39,11 +39,13 @@ namespace GDBAccess
                 EnablePragmas.ExecuteNonQuery();
             }
 
+            
+
             /* Define Game Table
              * Game table properties:
              *      ID - Primary Key
              *      Game name - Text, Unique
-             */ 
+             */
             SQLiteCommand DefineGameTable = GamesDB.CreateCommand();
             string GameTableDefinition = @"
                 CREATE TABLE Games(

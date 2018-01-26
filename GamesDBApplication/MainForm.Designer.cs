@@ -48,6 +48,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lbl_Entries = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Results)).BeginInit();
             this.SuspendLayout();
@@ -134,7 +135,7 @@
             this.button_Delete.Location = new System.Drawing.Point(479, 99);
             this.button_Delete.Name = "button_Delete";
             this.button_Delete.Size = new System.Drawing.Size(105, 23);
-            this.button_Delete.TabIndex = 7;
+            this.button_Delete.TabIndex = 6;
             this.button_Delete.Text = "Delete";
             this.button_Delete.UseVisualStyleBackColor = true;
             this.button_Delete.Click += new System.EventHandler(this.button_Delete_Click);
@@ -199,7 +200,8 @@
             this.tb_GameName.Location = new System.Drawing.Point(87, 43);
             this.tb_GameName.Name = "tb_GameName";
             this.tb_GameName.Size = new System.Drawing.Size(386, 20);
-            this.tb_GameName.TabIndex = 11;
+            this.tb_GameName.TabIndex = 1;
+            this.tb_GameName.TextChanged += new System.EventHandler(this.tb_GameName_TextChanged);
             // 
             // dgv_Results
             // 
@@ -221,7 +223,7 @@
             this.dgv_Results.RowHeadersVisible = false;
             this.dgv_Results.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_Results.Size = new System.Drawing.Size(572, 267);
-            this.dgv_Results.TabIndex = 9;
+            this.dgv_Results.TabIndex = 8;
             // 
             // GameName
             // 
@@ -251,7 +253,7 @@
             this.button_Export.Location = new System.Drawing.Point(479, 128);
             this.button_Export.Name = "button_Export";
             this.button_Export.Size = new System.Drawing.Size(105, 23);
-            this.button_Export.TabIndex = 8;
+            this.button_Export.TabIndex = 7;
             this.button_Export.Text = "Export";
             this.button_Export.UseVisualStyleBackColor = true;
             this.button_Export.Click += new System.EventHandler(this.button_Export_Click);
@@ -283,11 +285,21 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Game Name:";
             // 
+            // lbl_Entries
+            // 
+            this.lbl_Entries.AutoSize = true;
+            this.lbl_Entries.Location = new System.Drawing.Point(14, 141);
+            this.lbl_Entries.Name = "lbl_Entries";
+            this.lbl_Entries.Size = new System.Drawing.Size(42, 13);
+            this.lbl_Entries.TabIndex = 14;
+            this.lbl_Entries.Text = "Entries:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(596, 436);
+            this.Controls.Add(this.lbl_Entries);
             this.Controls.Add(this.dgv_Results);
             this.Controls.Add(this.tb_GameName);
             this.Controls.Add(this.lbl_NoEntries);
@@ -336,6 +348,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn GameName;
         private System.Windows.Forms.DataGridViewTextBoxColumn SystemName;
         private System.Windows.Forms.DataGridViewTextBoxColumn FormatType;
+        private System.Windows.Forms.Label lbl_Entries;
     }
 }
 

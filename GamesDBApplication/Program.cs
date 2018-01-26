@@ -24,14 +24,12 @@ namespace GDBAccess
             {
                 MessageBox.Show("Database not found. Initializing.", "Initialization");
 
-                DatabaseInitializer initializer = new DatabaseInitializer(FilePath);
+                DatabaseInitializer initializer = new DatabaseInitializer(DBFilePath);
                 initializer.InitializeDatabase();
                 initializer.Dispose();
 
                 MessageBox.Show("Database initialized.", "Initialization");
             }
-
-            
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

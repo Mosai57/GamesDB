@@ -22,6 +22,7 @@ namespace GDBAccess
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            this.Text += " - Version " + typeof(Program).Assembly.GetName().Version;
             DB_Manager = new DatabaseManager(DatabaseSource);
             LoadDatabaseContents();
         }
@@ -32,6 +33,7 @@ namespace GDBAccess
             LogTransaction("Search");
             DBResults = results;
             dgv_Results.DataSource = DBResults;
+            lbl_Entries.Text = String.Concat("Entries: ", DBResults.Count.ToString());
         }
 
         private void button_Add_Click(object sender, EventArgs e)
@@ -227,6 +229,11 @@ namespace GDBAccess
             DB_Manager = new DatabaseManager(DatabasePath);
             ClearForm();
             LoadDatabaseContents();
+        }
+
+        private void tb_GameName_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
