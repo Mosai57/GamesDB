@@ -31,7 +31,6 @@
             this.cb_System = new System.Windows.Forms.ComboBox();
             this.cb_Format = new System.Windows.Forms.ComboBox();
             this.button_Add = new System.Windows.Forms.Button();
-            this.button_Search = new System.Windows.Forms.Button();
             this.button_Delete = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,6 +87,7 @@
             this.cb_System.Name = "cb_System";
             this.cb_System.Size = new System.Drawing.Size(316, 21);
             this.cb_System.TabIndex = 3;
+            this.cb_System.SelectedIndexChanged += new System.EventHandler(this.cb_System_SelectedIndexChanged);
             // 
             // cb_Format
             // 
@@ -103,6 +103,7 @@
             this.cb_Format.Name = "cb_Format";
             this.cb_Format.Size = new System.Drawing.Size(316, 21);
             this.cb_Format.TabIndex = 5;
+            this.cb_Format.SelectedIndexChanged += new System.EventHandler(this.cb_Format_SelectedIndexChanged);
             // 
             // button_Add
             // 
@@ -116,23 +117,11 @@
             this.button_Add.UseVisualStyleBackColor = true;
             this.button_Add.Click += new System.EventHandler(this.button_Add_Click);
             // 
-            // button_Search
-            // 
-            this.button_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_Search.AutoSize = true;
-            this.button_Search.Location = new System.Drawing.Point(479, 70);
-            this.button_Search.Name = "button_Search";
-            this.button_Search.Size = new System.Drawing.Size(105, 23);
-            this.button_Search.TabIndex = 4;
-            this.button_Search.Text = "Search";
-            this.button_Search.UseVisualStyleBackColor = true;
-            this.button_Search.Click += new System.EventHandler(this.button_Search_Click);
-            // 
             // button_Delete
             // 
             this.button_Delete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_Delete.AutoSize = true;
-            this.button_Delete.Location = new System.Drawing.Point(479, 99);
+            this.button_Delete.Location = new System.Drawing.Point(479, 70);
             this.button_Delete.Name = "button_Delete";
             this.button_Delete.Size = new System.Drawing.Size(105, 23);
             this.button_Delete.TabIndex = 6;
@@ -250,7 +239,7 @@
             // button_Export
             // 
             this.button_Export.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_Export.Location = new System.Drawing.Point(479, 128);
+            this.button_Export.Location = new System.Drawing.Point(479, 99);
             this.button_Export.Name = "button_Export";
             this.button_Export.Size = new System.Drawing.Size(105, 23);
             this.button_Export.TabIndex = 7;
@@ -305,7 +294,6 @@
             this.Controls.Add(this.lbl_NoEntries);
             this.Controls.Add(this.button_Export);
             this.Controls.Add(this.button_Delete);
-            this.Controls.Add(this.button_Search);
             this.Controls.Add(this.button_Add);
             this.Controls.Add(this.cb_Format);
             this.Controls.Add(this.label3);
@@ -331,7 +319,6 @@
         private System.Windows.Forms.ComboBox cb_System;
         private System.Windows.Forms.ComboBox cb_Format;
         private System.Windows.Forms.Button button_Add;
-        private System.Windows.Forms.Button button_Search;
         private System.Windows.Forms.Button button_Delete;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;

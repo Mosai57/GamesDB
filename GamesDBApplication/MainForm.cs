@@ -13,6 +13,9 @@ namespace GDBAccess
         Logger logger;
         string DatabaseSource;
 
+        SearchParameters QueryParams = new SearchParameters();
+
+
         public MainForm(string FilePath, string DBFilePath)
         {
             InitializeComponent();
@@ -65,21 +68,26 @@ namespace GDBAccess
             }
         }
 
+        private void build_search_terms()
+        {
+            QueryParams.GameName = tb_GameName.Text;
+            if (QueryParams.GameName == "") { QueryParams.GameName = "%"; }
+            else { QueryParams.GameName = string.Concat("%", QueryParams.GameName, "%"); } // Allow for loose searching
+
+            QueryParams.System = cb_System.Text;
+            if (QueryParams.System == "") { QueryParams.System = "%"; }
+
+            QueryParams.Format = cb_Format.Text;
+            if (QueryParams.Format == "") { QueryParams.Format = "%"; }
+        }
+
         private void button_Search_Click(object sender, EventArgs e)
         {
-            string Game_SearchTerm = tb_GameName.Text;
-            if (Game_SearchTerm == "") { Game_SearchTerm = "%"; }
-            else { Game_SearchTerm = string.Concat("%", Game_SearchTerm, "%"); } // Allow for loose searching
-
-            string System_SearchTerm = cb_System.Text;
-            if (System_SearchTerm == "") { System_SearchTerm = "%"; }
-
-            string Format_SearchTerm = cb_Format.Text;
-            if (Format_SearchTerm == "") { Format_SearchTerm = "%"; }
+            build_search_terms();
 
             try
             {
-                LoadDatabaseContents(Game_SearchTerm, System_SearchTerm, Format_SearchTerm);
+                LoadDatabaseContents(QueryParams.GameName, QueryParams.System, QueryParams.Format);
             }
             catch (SQLiteException SQL_e)
             {
@@ -233,7 +241,47 @@ namespace GDBAccess
 
         private void tb_GameName_TextChanged(object sender, EventArgs e)
         {
+            build_search_terms();
 
+            try
+            {
+                LoadDatabaseContents(QueryParams.GameName, QueryParams.System, QueryParams.Format);
+            }
+            catch (SQLiteException SQL_e)
+            {
+                LogEvent(SQL_e);
+                MessageBox.Show(Convert.ToString(SQL_e));
+            }
+        }
+
+        private void cb_System_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            build_search_terms();
+
+            try
+            {
+                LoadDatabaseContents(QueryParams.GameName, QueryParams.System, QueryParams.Format);
+            }
+            catch (SQLiteException SQL_e)
+            {
+                LogEvent(SQL_e);
+                MessageBox.Show(Convert.ToString(SQL_e));
+            }
+        }
+
+        private void cb_Format_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            build_search_terms();
+
+            try
+            {
+                LoadDatabaseContents(QueryParams.GameName, QueryParams.System, QueryParams.Format);
+            }
+            catch (SQLiteException SQL_e)
+            {
+                LogEvent(SQL_e);
+                MessageBox.Show(Convert.ToString(SQL_e));
+            }
         }
     }
 }
