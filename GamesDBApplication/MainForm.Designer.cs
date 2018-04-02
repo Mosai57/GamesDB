@@ -124,7 +124,7 @@
             this.button_Delete.Location = new System.Drawing.Point(479, 70);
             this.button_Delete.Name = "button_Delete";
             this.button_Delete.Size = new System.Drawing.Size(105, 23);
-            this.button_Delete.TabIndex = 6;
+            this.button_Delete.TabIndex = 4;
             this.button_Delete.Text = "Delete";
             this.button_Delete.UseVisualStyleBackColor = true;
             this.button_Delete.Click += new System.EventHandler(this.button_Delete_Click);
@@ -242,7 +242,7 @@
             this.button_Export.Location = new System.Drawing.Point(479, 99);
             this.button_Export.Name = "button_Export";
             this.button_Export.Size = new System.Drawing.Size(105, 23);
-            this.button_Export.TabIndex = 7;
+            this.button_Export.TabIndex = 6;
             this.button_Export.Text = "Export";
             this.button_Export.UseVisualStyleBackColor = true;
             this.button_Export.Click += new System.EventHandler(this.button_Export_Click);

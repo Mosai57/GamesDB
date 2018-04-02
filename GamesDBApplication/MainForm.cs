@@ -12,8 +12,7 @@ namespace GDBAccess
         List<GameEntry> DBResults;
         Logger logger;
         string DatabaseSource;
-
-        SearchParameters QueryParams = new SearchParameters();
+        QueryParameters QueryParams = new QueryParameters();
 
 
         public MainForm(string FilePath, string DBFilePath)
@@ -30,15 +29,11 @@ namespace GDBAccess
             LoadDatabaseContents();
         }
 
-        private void LoadDatabaseContents(string Game = "%", string System = "%", string Format = "%")
-        {
-            List<GameEntry> results = DB_Manager.SearchDB(Game, System, Format);
-            LogTransaction("Search");
-            DBResults = results;
-            dgv_Results.DataSource = DBResults;
-            lbl_Entries.Text = String.Concat("Entries: ", DBResults.Count.ToString());
-        }
-
+        /// <summary>
+        /// Adds the current QueryParams to the database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_Add_Click(object sender, EventArgs e)
         {
             string GameName = tb_GameName.Text;
@@ -53,13 +48,13 @@ namespace GDBAccess
 
             try
             {
-                DB_Manager.AddToDB_Controller(GameName, SystemName, Format);
+                DB_Manager.Add(QueryParams);
                 LogTransaction("Add");
 
                 tb_GameName.Clear();
                 tb_GameName.Focus();
 
-                LoadDatabaseContents("%", cb_System.Text, cb_Format.Text);
+                LoadDatabaseContents();
             }
             catch (SQLiteException SQL_e)
             {
@@ -68,26 +63,18 @@ namespace GDBAccess
             }
         }
 
-        private void build_search_terms()
-        {
-            QueryParams.GameName = tb_GameName.Text;
-            if (QueryParams.GameName == "") { QueryParams.GameName = "%"; }
-            else { QueryParams.GameName = string.Concat("%", QueryParams.GameName, "%"); } // Allow for loose searching
-
-            QueryParams.System = cb_System.Text;
-            if (QueryParams.System == "") { QueryParams.System = "%"; }
-
-            QueryParams.Format = cb_Format.Text;
-            if (QueryParams.Format == "") { QueryParams.Format = "%"; }
-        }
-
+        /// <summary>
+        /// Searches the database with the current QueryParams.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_Search_Click(object sender, EventArgs e)
         {
             build_search_terms();
 
             try
             {
-                LoadDatabaseContents(QueryParams.GameName, QueryParams.System, QueryParams.Format);
+                LoadDatabaseContents();
             }
             catch (SQLiteException SQL_e)
             {
@@ -96,11 +83,16 @@ namespace GDBAccess
             }
         }
 
+        /// <summary>
+        /// Deletes the current QueryParams from the database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_Delete_Click(object sender, EventArgs e)
         {
             if (dgv_Results.SelectedRows.Count > 0)
             {
-                var record = (GameEntry) dgv_Results.SelectedRows[0].DataBoundItem;
+                var record = (GameEntry)dgv_Results.SelectedRows[0].DataBoundItem;
 
                 DialogResult PerformDelete = MessageBox.Show($@"Are you sure you want to delete the following record?
 
@@ -117,7 +109,7 @@ namespace GDBAccess
                     string FormatType = record.FormatName;
                     bool Deleted = false;
 
-                    Deleted = DB_Manager.DeleteRecord(GameName, SystemName, FormatType);
+                    Deleted = DB_Manager.Delete(QueryParams);
                     LogTransaction("Delete");
                     if (Deleted)
                     {
@@ -126,7 +118,7 @@ namespace GDBAccess
                         string formatText = cb_Format.Text;
                         if (formatText == "") { formatText = "%"; }
 
-                        LoadDatabaseContents("%", systemText, formatText);
+                        LoadDatabaseContents();
                     }
                     else
                     {
@@ -137,33 +129,11 @@ namespace GDBAccess
             }
         }
 
-        private void ClearForm()
-        {
-            tb_GameName.Clear();
-            cb_Format.Text = "";
-            cb_System.Text = "";
-            dgv_Results.DataSource = null;
-        }
-
-        private void LogTransaction(string TransactionType)
-        {
-            string gameName = tb_GameName.Text;
-            if(gameName == "") { gameName = "%"; }
-            string systemName = cb_System.Text;
-            if(systemName == "") { systemName = "%"; }
-            string formatName = cb_Format.Text;
-            if(formatName == "") { formatName = "%"; }
-
-            TransactionLogObject transObj = new TransactionLogObject(TransactionType, gameName, systemName, formatName);
-            logger.Log(transObj);
-        }
-
-        private void LogEvent(object eventObj)
-        {
-            EventLogObject eventLog = new EventLogObject(eventObj);
-            logger.Log(eventLog);
-        }
-
+        /// <summary>
+        /// Prompts the user for an export method and executes the proper export method.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_Export_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog();
@@ -175,18 +145,22 @@ namespace GDBAccess
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 Export exportModule = new GDBAccess.Export();
-                exportModule.ExportCSV(DBResults, saveFile.FileName);
+                exportModule.CSV(DBResults, saveFile.FileName);
                 MessageBox.Show("Export completed!");
             }
         }
 
+        /// <summary>
+        /// Calls the DatabaseInitializer and clears the database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void initializeDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"InduljNet\Gdba", "GDBA.sdb");
             DB_Manager.CloseDatabase();
             DatabaseInitializer Initializer = new DatabaseInitializer(DatabasePath);
 
-            Initializer.ClearDatabase();
             Initializer.InitializeDatabase(false); // false indicating db exists, tables dont.
 
             DB_Manager = new DatabaseManager(DatabasePath);
@@ -194,6 +168,11 @@ namespace GDBAccess
             LoadDatabaseContents();
         }
 
+        /// <summary>
+        /// Creates a backup of the database .sdb file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backupDatabaseToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog();
@@ -209,23 +188,11 @@ namespace GDBAccess
             }
         }
 
-        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string outputString = "";
-            List<string> selections = new List<string>();
-            foreach(object o in dgv_Results.SelectedRows)
-            {
-                selections.Add(o.ToString());
-            }
-            outputString = string.Join("\n", selections.ToArray());
-            Clipboard.SetText(outputString);
-        }
-
-        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            dgv_Results.SelectAll();
-        }
-
+        /// <summary>
+        /// Updates the database to the current standard according to the DatabaseInitializer object
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void updateDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"InduljNet\Gdba", "GDBA.sdb");
@@ -239,13 +206,18 @@ namespace GDBAccess
             LoadDatabaseContents();
         }
 
+        /// <summary>
+        /// Allows for the database results to change to immediately match the form elements.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tb_GameName_TextChanged(object sender, EventArgs e)
         {
             build_search_terms();
 
             try
             {
-                LoadDatabaseContents(QueryParams.GameName, QueryParams.System, QueryParams.Format);
+                LoadDatabaseContents();
             }
             catch (SQLiteException SQL_e)
             {
@@ -254,13 +226,18 @@ namespace GDBAccess
             }
         }
 
+        /// <summary>
+        /// Allows for the database results to change to immediately match the form elements.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cb_System_SelectedIndexChanged(object sender, EventArgs e)
         {
             build_search_terms();
 
             try
             {
-                LoadDatabaseContents(QueryParams.GameName, QueryParams.System, QueryParams.Format);
+                LoadDatabaseContents();
             }
             catch (SQLiteException SQL_e)
             {
@@ -269,19 +246,89 @@ namespace GDBAccess
             }
         }
 
+        /// <summary>
+        /// Allows for the database results to change to immediately match the form elements.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cb_Format_SelectedIndexChanged(object sender, EventArgs e)
         {
             build_search_terms();
 
             try
             {
-                LoadDatabaseContents(QueryParams.GameName, QueryParams.System, QueryParams.Format);
+                LoadDatabaseContents();
             }
             catch (SQLiteException SQL_e)
             {
                 LogEvent(SQL_e);
                 MessageBox.Show(Convert.ToString(SQL_e));
             }
+        }
+
+        /// <summary>
+        /// Populates dgv_Results with the query results for QueryParams' contents.
+        /// </summary>
+        private void LoadDatabaseContents()
+        {
+            List<GameEntry> results = DB_Manager.Search(QueryParams);
+            DBResults = results;
+            dgv_Results.DataSource = DBResults;
+            lbl_Entries.Text = String.Concat("Entries: ", DBResults.Count.ToString());
+        }
+
+        /// <summary>
+        /// Updates QueryParams with the current form information.
+        /// </summary>
+        private void build_search_terms()
+        {
+            QueryParams.GameName = tb_GameName.Text;
+            if (QueryParams.GameName == "") { QueryParams.GameName = "%"; }
+            else { QueryParams.GameName = string.Concat("%", QueryParams.GameName, "%"); } // Allow for loose searching
+
+            QueryParams.System = cb_System.Text;
+            if (QueryParams.System == "") { QueryParams.System = "%"; }
+
+            QueryParams.Format = cb_Format.Text;
+            if (QueryParams.Format == "") { QueryParams.Format = "%"; }
+        }
+
+        /// <summary>
+        /// Sets all form elements to blank or empty.
+        /// </summary>
+        private void ClearForm()
+        {
+            tb_GameName.Clear();
+            cb_Format.Text = "";
+            cb_System.Text = "";
+            dgv_Results.DataSource = null;
+        }
+
+        /// <summary>
+        /// Logs a SQL transaction.
+        /// </summary>
+        /// <param name="TransactionType"></param>
+        private void LogTransaction(string TransactionType)
+        {
+            string gameName = tb_GameName.Text;
+            if(gameName == "") { gameName = "%"; }
+            string systemName = cb_System.Text;
+            if(systemName == "") { systemName = "%"; }
+            string formatName = cb_Format.Text;
+            if(formatName == "") { formatName = "%"; }
+
+            TransactionLogObject transObj = new TransactionLogObject(TransactionType, gameName, systemName, formatName);
+            logger.Log(transObj);
+        }
+
+        /// <summary>
+        /// Logs a system event.
+        /// </summary>
+        /// <param name="eventObj"></param>
+        private void LogEvent(object eventObj)
+        {
+            EventLogObject eventLog = new EventLogObject(eventObj);
+            logger.Log(eventLog);
         }
     }
 }

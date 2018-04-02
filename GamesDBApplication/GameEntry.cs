@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace GDBAccess
+﻿namespace GDBAccess
 {
+    /// <summary>
+    /// Object holding information for a single game entry.
+    /// </summary>
     public class GameEntry
     {
         public string Name { get; set; }

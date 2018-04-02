@@ -4,6 +4,9 @@ using System.Data.SQLite;
 
 namespace GDBAccess
 {
+    /// <summary>
+    /// Manages database transactions for Adding, Searching, and Deleting
+    /// </summary>
     class DatabaseManager : IDisposable
     {
         private SQLiteConnection GamesDB;
@@ -15,9 +18,31 @@ namespace GDBAccess
             GamesDB.BindFunction(
                 new SQLiteFunctionAttribute() { FuncType = FunctionType.Collation, Name = "library", },
                 new LibraryCollation()
-                );
+            );
         }
 
+        public void Dispose()
+        {
+            if (GamesDB != null)
+            {
+                GamesDB.Dispose();
+                GamesDB = null;
+            }
+        }
+
+        /// <summary>
+        /// Closes the database and disposes the object. Forces Garbage Collection to ensure that database is fully unloaded.
+        /// </summary>
+        public void CloseDatabase()
+        {
+            GamesDB.Close();
+            this.Dispose();
+            GC.Collect();
+        }
+
+        /// <summary>
+        /// Custom collation library for GDBA. Normalizes searches results.
+        /// </summary>
         class LibraryCollation : SQLiteFunction
         {
             public LibraryCollation() { }
@@ -65,6 +90,11 @@ namespace GDBAccess
                 return word2_start;
             }
 
+            /// <summary>
+            /// Sorts alphabetically, ignoring leading As or Thes in a title.
+            /// </summary>
+            /// <param name="s"></param>
+            /// <returns></returns>
             static string NormalizeName(string s)
             {
                 if (s.StartsWith("A ", StringComparison.CurrentCultureIgnoreCase) ||
@@ -83,29 +113,24 @@ namespace GDBAccess
                 return StringComparer.CurrentCultureIgnoreCase.Compare(
                     NormalizeName(param1),
                     NormalizeName(param2)
-                    );
+                );
             }
         }
 
-        public void Dispose()
-        {
-            if (GamesDB != null)
-            {
-                GamesDB.Dispose();
-                GamesDB = null;
-            }
-        }
-
-        public void AddToDB_Controller(string GameName, string SystemName, string Format)
+        /// <summary>
+        /// Controls the local functions necessary to add a new entry to the database.
+        /// </summary>
+        /// <param name="Parameters"></param>
+        public void Add(QueryParameters Parameters)
         {
             int GameID = Convert.ToInt32(null);
             int SystemID = Convert.ToInt32(null);
             int FormatID = Convert.ToInt32(null);
             string DateAdded = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-            GameID = GetGameID(GameName);
-            SystemID = GetSystemID(SystemName);
-            FormatID = GetFormatID(Format);
+            GameID = GetGameID(Parameters.GameName);
+            SystemID = GetSystemID(Parameters.System);
+            FormatID = GetFormatID(Parameters.Format);
 
             // Secondary check to ensure no garbage data is added.
             // Above functions do attempt to ensure no 0s are returned.
@@ -115,46 +140,12 @@ namespace GDBAccess
             }
         }
 
-        int AddGame(string GameName)
-        {
-            int GameID = 0;
-            SQLiteParameter Param_GameName = new SQLiteParameter("@GameName", GameName);
-
-            SQLiteCommand SQL_Add_Game = GamesDB.CreateCommand();
-            SQL_Add_Game.CommandText = "INSERT INTO Games (Game) VALUES (@GameName); select last_insert_rowid();";
-            SQL_Add_Game.Parameters.Add(Param_GameName);
-            GameID = (int)(long)SQL_Add_Game.ExecuteScalar();
-
-            return GameID;
-        }
-
-        int AddSystem(string SystemName)
-        {
-            int SystemID = 0;
-            SQLiteParameter Param_SystemName = new SQLiteParameter("@SystemName", SystemName);
-
-            SQLiteCommand SQL_Add_System = GamesDB.CreateCommand();
-            SQL_Add_System.CommandText = "INSERT INTO Systems (System) VALUES (@SystemName); select last_insert_rowid();";
-            SQL_Add_System.Parameters.Add(Param_SystemName);
-            SystemID = (int)(long)SQL_Add_System.ExecuteScalar();
-
-            return SystemID;
-        }
-
-        void AddGameSystem(int GameID, int SystemID, int FormatID, string DateAdded)
-        {
-            SQLiteCommand SQL_Add_Entry = GamesDB.CreateCommand();
-            SQL_Add_Entry.CommandText = "INSERT INTO GameSystem (GameID, SystemID, FormatID, DateAdded) Values (@GameID, @SystemID, @FormatID, @DateAdded)";
-            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@GameID", GameID));
-            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@SystemID", SystemID));
-            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@FormatID", FormatID));
-            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@DateAdded", DateAdded));
-
-            SQL_Add_Entry.ExecuteNonQuery();
-        }
-
-         
-        public List<GameEntry> SearchDB(string Game_SearchTerm, string System_SearchTerm, string Format_SearchTerm)
+        /// <summary>
+        /// Queries the database and returns a list of GameEntry objects.
+        /// </summary>
+        /// <param name="QueryParameters"></param>
+        /// <returns></returns>
+        public List<GameEntry> Search(QueryParameters QueryParameters)
         {
             SQLiteCommand SQL_Get_Rows = GamesDB.CreateCommand();
             SQL_Get_Rows.CommandText =
@@ -171,9 +162,9 @@ namespace GDBAccess
                     INNER JOIN Format ON GameSystem.FormatID = Format.ID 
                   ) WHERE Game LIKE @GameTerm AND Platform LIKE @SystemTerm AND Format LIKE @FormatTerm 
                   ORDER BY Game COLLATE library ASC";
-            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@GameTerm", Game_SearchTerm));
-            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@SystemTerm", System_SearchTerm));
-            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@FormatTerm", Format_SearchTerm));
+            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@GameTerm", QueryParameters.GameName));
+            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@SystemTerm", QueryParameters.System));
+            SQL_Get_Rows.Parameters.Add(new SQLiteParameter("@FormatTerm", QueryParameters.Format));
 
             SQLiteDataReader Reader = SQL_Get_Rows.ExecuteReader();
 
@@ -189,11 +180,16 @@ namespace GDBAccess
             return list;
         }
 
-        public bool DeleteRecord(string GameName, string SystemName, string FormatType)
+        /// <summary>
+        /// Removes the record in the GameSystems table that matches the parameters.
+        /// </summary>
+        /// <param name="Parameters"></param>
+        /// <returns></returns>
+        public bool Delete(QueryParameters Parameters)
         {
-            int GameName_ID = GetGameID(GameName);
-            int SystemName_ID = GetSystemID(SystemName);
-            int FormatType_ID = GetFormatID(FormatType);
+            int GameName_ID = GetGameID(Parameters.GameName);
+            int SystemName_ID = GetSystemID(Parameters.System);
+            int FormatType_ID = GetFormatID(Parameters.Format);
 
             SQLiteCommand SQL_Delete_Record = GamesDB.CreateCommand();
             SQL_Delete_Record.CommandText = "DELETE FROM GameSystem WHERE GameID=@GameName_ID AND SystemID=@SystemName_ID AND FormatID=@FormatType_ID";
@@ -206,7 +202,67 @@ namespace GDBAccess
             return true;
         }
 
-        int GetGameID(string GameName)
+        /// <summary>
+        /// Adds GameName to the Games table and returns the new RowID
+        /// </summary>
+        /// <param name="GameName"></param>
+        /// <returns></returns>
+        private int AddGame(string GameName)
+        {
+            int GameID = 0;
+            SQLiteParameter Param_GameName = new SQLiteParameter("@GameName", GameName);
+
+            SQLiteCommand SQL_Add_Game = GamesDB.CreateCommand();
+            SQL_Add_Game.CommandText = "INSERT INTO Games (Game) VALUES (@GameName); select last_insert_rowid();";
+            SQL_Add_Game.Parameters.Add(Param_GameName);
+            GameID = (int)(long)SQL_Add_Game.ExecuteScalar();
+
+            return GameID;
+        }
+
+        /// <summary>
+        /// Adds SystemName to the Systems table and returns the new RowID
+        /// </summary>
+        /// <param name="SystemName"></param>
+        /// <returns></returns>
+        private int AddSystem(string SystemName)
+        {
+            int SystemID = 0;
+            SQLiteParameter Param_SystemName = new SQLiteParameter("@SystemName", SystemName);
+
+            SQLiteCommand SQL_Add_System = GamesDB.CreateCommand();
+            SQL_Add_System.CommandText = "INSERT INTO Systems (System) VALUES (@SystemName); select last_insert_rowid();";
+            SQL_Add_System.Parameters.Add(Param_SystemName);
+            SystemID = (int)(long)SQL_Add_System.ExecuteScalar();
+
+            return SystemID;
+        }
+
+        /// <summary>
+        /// Adds a new entry in the GameSystems table using the RowIDs for the specified parameters.
+        /// </summary>
+        /// <param name="GameID"></param>
+        /// <param name="SystemID"></param>
+        /// <param name="FormatID"></param>
+        /// <param name="DateAdded"></param>
+        private void AddGameSystem(int GameID, int SystemID, int FormatID, string DateAdded)
+        {
+            SQLiteCommand SQL_Add_Entry = GamesDB.CreateCommand();
+            SQL_Add_Entry.CommandText = "INSERT INTO GameSystem (GameID, SystemID, FormatID, DateAdded) Values (@GameID, @SystemID, @FormatID, @DateAdded)";
+            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@GameID", GameID));
+            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@SystemID", SystemID));
+            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@FormatID", FormatID));
+            SQL_Add_Entry.Parameters.Add(new SQLiteParameter("@DateAdded", DateAdded));
+
+            SQL_Add_Entry.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Returns the RowID for GameName from the Games table.
+        /// </summary>
+        /// <param name="GameName"></param>
+        /// <returns></returns>
+        private int GetGameID(string GameName)
         {
             SQLiteCommand SQL_Get_RowID = GamesDB.CreateCommand();
             SQL_Get_RowID.CommandText = "SELECT ID FROM Games WHERE Game=@GameName";
@@ -231,10 +287,12 @@ namespace GDBAccess
             }
         }
 
-        // Fetches the RowID for the System Name
-        // If System Name is not found in the database
-        // the Name is added and the new RowID is returned
-        int GetSystemID(string SystemName)
+        /// <summary>
+        /// Returns the RowID for SystemName from the Systems table.
+        /// </summary>
+        /// <param name="SystemName"></param>
+        /// <returns></returns>
+        private int GetSystemID(string SystemName)
         {
             SQLiteCommand SQL_Get_RowID = GamesDB.CreateCommand();
             SQL_Get_RowID.CommandText = "SELECT ID FROM Systems WHERE System==@SystemName";
@@ -259,7 +317,12 @@ namespace GDBAccess
             }
         }
 
-        int GetFormatID(string Format)
+        /// <summary>
+        /// Returns the RowID for Format from the Format table.
+        /// </summary>
+        /// <param name="Format"></param>
+        /// <returns></returns>
+        private int GetFormatID(string Format)
         {
             int FormatID = 0;
             SQLiteCommand SQL_Get_FormatID = GamesDB.CreateCommand();
@@ -275,13 +338,6 @@ namespace GDBAccess
             }
 
             return FormatID;
-        }
-
-        public void CloseDatabase()
-        {
-            GamesDB.Close();
-            this.Dispose();
-            GC.Collect();
-        }
+        }   
     }
 }

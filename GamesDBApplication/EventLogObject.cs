@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GDBAccess
+﻿namespace GDBAccess
 {
     /// <summary>
     /// Logs an event

@@ -20,15 +20,12 @@ namespace GDBAccess
             System.IO.Directory.CreateDirectory(Path.Combine(FilePath, @"log"));
             string DBFilePath = Path.Combine(FilePath, filename);
             
+            // If this is our first time using the program, initialize a new database.
             if (!File.Exists(DBFilePath))
             {
-                MessageBox.Show("Database not found. Initializing.", "Initialization");
-
                 DatabaseInitializer initializer = new DatabaseInitializer(DBFilePath);
                 initializer.InitializeDatabase();
                 initializer.Dispose();
-
-                MessageBox.Show("Database initialized.", "Initialization");
             }
 
             Application.EnableVisualStyles();

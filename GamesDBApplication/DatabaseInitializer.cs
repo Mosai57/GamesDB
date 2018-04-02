@@ -3,6 +3,9 @@ using System.Data.SQLite;
 
 namespace GDBAccess
 {
+    /// <summary>
+    /// Handles database building and clearing functions.
+    /// </summary>
     class DatabaseInitializer : IDisposable
     {
         private SQLiteConnection GamesDB;
@@ -21,6 +24,10 @@ namespace GDBAccess
             }
         }
 
+        /// <summary>
+        /// Clears the database and rebuilds the tables.
+        /// </summary>
+        /// <param name="NewDB"></param>
         public void InitializeDatabase(bool NewDB = true)
         {
             GamesDB.Open();
@@ -38,8 +45,10 @@ namespace GDBAccess
                 EnablePragmas.CommandText = PragmaDefinitons;
                 EnablePragmas.ExecuteNonQuery();
             }
-
-            
+            else
+            {
+                ClearDatabase();
+            }
 
             /* Define Game Table
              * Game table properties:
@@ -119,6 +128,9 @@ namespace GDBAccess
             GamesDB.Close();
         }
 
+        /// <summary>
+        /// Updates the database to the latest tables.
+        /// </summary>
         public void UpdateDatabase()
         {
             GamesDB.Open();
@@ -164,16 +176,19 @@ namespace GDBAccess
             GamesDB.Close();
         }
 
+        /// <summary>
+        /// Drops all tables in the database.
+        /// </summary>
         public void ClearDatabase()
         {
             GamesDB.Open();
 
             SQLiteCommand DropTables = GamesDB.CreateCommand();
             string DropString = @"
-                DROP TABLE IF EXISTS GameSystem; 
-                DROP TABLE IF EXISTS Games; 
-                DROP TABLE IF EXISTS Systems; 
-                DROP TABLE IF EXISTS Format;";
+                DELETE FROM GameSystem;
+                DELETE FROM Games; 
+                DELETE FROM Systems; 
+                DELETE FROM Format;";
             DropTables.CommandText = DropString;
             DropTables.ExecuteNonQuery();
 
