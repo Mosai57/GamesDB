@@ -10,6 +10,7 @@ namespace GDBAccess
     {
         DatabaseManager DB_Manager;
         List<GameEntry> DBResults;
+        int NumEntries;
         Logger logger;
         string DatabaseSource;
         QueryParameters QueryParams = new QueryParameters();
@@ -70,7 +71,7 @@ namespace GDBAccess
         /// <param name="e"></param>
         private void button_Search_Click(object sender, EventArgs e)
         {
-            build_search_terms();
+            BuildQueryParameters();
 
             try
             {
@@ -207,13 +208,27 @@ namespace GDBAccess
         }
 
         /// <summary>
+        /// Selects a random row in the DataGridView element and snaps to it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void randomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Random rng = new Random();
+            int index = rng.Next(NumEntries - 1);
+            dgv_Results.ClearSelection();
+            dgv_Results.Rows[index].Selected = true;
+            dgv_Results.CurrentCell = dgv_Results.Rows[index].Cells[0];
+        }
+
+        /// <summary>
         /// Allows for the database results to change to immediately match the form elements.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void tb_GameName_TextChanged(object sender, EventArgs e)
         {
-            build_search_terms();
+            BuildQueryParameters();
 
             try
             {
@@ -233,7 +248,7 @@ namespace GDBAccess
         /// <param name="e"></param>
         private void cb_System_SelectedIndexChanged(object sender, EventArgs e)
         {
-            build_search_terms();
+            BuildQueryParameters();
 
             try
             {
@@ -253,7 +268,7 @@ namespace GDBAccess
         /// <param name="e"></param>
         private void cb_Format_SelectedIndexChanged(object sender, EventArgs e)
         {
-            build_search_terms();
+            BuildQueryParameters();
 
             try
             {
@@ -271,16 +286,18 @@ namespace GDBAccess
         /// </summary>
         private void LoadDatabaseContents()
         {
+            BuildQueryParameters();
             List<GameEntry> results = DB_Manager.Search(QueryParams);
             DBResults = results;
             dgv_Results.DataSource = DBResults;
-            lbl_Entries.Text = String.Concat("Entries: ", DBResults.Count.ToString());
+            NumEntries = DBResults.Count;
+            lbl_Entries.Text = String.Concat("Entries: ", NumEntries.ToString());
         }
 
         /// <summary>
         /// Updates QueryParams with the current form information.
         /// </summary>
-        private void build_search_terms()
+        private void BuildQueryParameters()
         {
             QueryParams.GameName = tb_GameName.Text;
             if (QueryParams.GameName == "") { QueryParams.GameName = "%"; }
@@ -329,6 +346,6 @@ namespace GDBAccess
         {
             EventLogObject eventLog = new EventLogObject(eventObj);
             logger.Log(eventLog);
-        }
+        } 
     }
 }
