@@ -8,5 +8,14 @@
         public string GameName { get; set; }
         public string System { get; set; }
         public string Format { get; set; }
+
+        public bool ValidateEntry()
+        {
+            if(GameName == "" || System == "" || Format == "")
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

@@ -42,14 +42,11 @@ namespace GDBAccess
             AddParams.System = cb_System.Text;
             AddParams.Format = cb_Format.Text;
 
-            if (AddParams.GameName == "" || AddParams.System == "" || AddParams.Format == "")
+            if (!AddParams.ValidateEntry())
             {
-                MessageBox.Show("No fields may be left blank when adding an entry.", "Missing Fields", MessageBoxButtons.OK);
+                MessageBox.Show("No fields may be left empty when adding a game to the database.");
                 return;
             }
-
-            // Prevent any rogue wildcards entering the database.
-            AddParams.GameName.Replace("%", "Percent");
 
             try
             {
