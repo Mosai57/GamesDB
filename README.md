@@ -4,4 +4,4 @@ Games Database Access allows for a user to store and track their games library a
 
 The simple user interface allows for the user to quickly search for a game in their library. If the game doesn't exist in their library, they can add it straight away with no extra hassle!
 
-![alt text](Documentation/GDBAccess_Example.png "Example")
+![alt text](https://github.com/Mosai57/GamesDB/blob/master/GDBAccess_Example.png "Example")
