@@ -37,19 +37,23 @@ namespace GDBAccess
         /// <param name="e"></param>
         private void button_Add_Click(object sender, EventArgs e)
         {
-            string GameName = tb_GameName.Text;
-            string SystemName = cb_System.Text;
-            string Format = cb_Format.Text;
+            QueryParameters AddParams = new QueryParameters();
+            AddParams.GameName = tb_GameName.Text;
+            AddParams.System = cb_System.Text;
+            AddParams.Format = cb_Format.Text;
 
-            if (GameName == "" || SystemName == "" || Format == "")
+            if (AddParams.GameName == "" || AddParams.System == "" || AddParams.Format == "")
             {
                 MessageBox.Show("No fields may be left blank when adding an entry.", "Missing Fields", MessageBoxButtons.OK);
                 return;
             }
 
+            // Prevent any rogue wildcards entering the database.
+            AddParams.GameName.Replace("%", "Percent");
+
             try
             {
-                DB_Manager.Add(QueryParams);
+                DB_Manager.Add(AddParams);
                 LogTransaction("Add");
 
                 tb_GameName.Clear();
@@ -105,12 +109,13 @@ namespace GDBAccess
 
                 if (PerformDelete == DialogResult.Yes)
                 {
-                    string GameName = record.Name;
-                    string SystemName = record.SystemName;
-                    string FormatType = record.FormatName;
+                    QueryParameters DelParams = new QueryParameters();
+                    DelParams.GameName = record.Name;
+                    DelParams.System = record.SystemName;
+                    DelParams.Format = record.FormatName;
                     bool Deleted = false;
 
-                    Deleted = DB_Manager.Delete(QueryParams);
+                    Deleted = DB_Manager.Delete(DelParams);
                     LogTransaction("Delete");
                     if (Deleted)
                     {
